@@ -1,0 +1,8 @@
+{
+  "name": "말결 (Malgyeol)",
+  "description": "청각장애 대학생을 위한 실시간 발표 리허설 및 목소리 전달력 시각 분석 솔루션",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

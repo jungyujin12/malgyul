@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+@theme {
+  --color-cream: #FDF6EF;
+  --color-terracotta: #C1440E;
+  --color-terracotta-light: #E8693A;
+  --color-terracotta-pale: #F5E6D8;
+  --color-brown-dark: #3A2A1E;
+  --color-brown-mid: #7A6355;
+  --color-brown-light: #B09A8A;
+  --color-border: #E8DDD3;
+  --color-border-light: #F0E8E0;
+  --color-warm-white: #FFFCF8;
+  
+  --font-sans: 'Noto Sans KR', sans-serif;
+  --font-display: 'Nanum Myeongjo', serif;
+  --font-logo: 'Gowun Dodum', sans-serif;
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-brown-dark);
+}
+
+/* Custom word comparison highlights */
+.word-ok {
+  background-color: #D4EDDA;
+  color: #155724;
+  border-bottom: 2px solid #28A745;
+  font-weight: 500;
+}
+
+.word-miss {
+  background-color: #FFF3CD;
+  color: #856404;
+  border-bottom: 2px solid #FFC107;
+  font-weight: 500;
+}
+
+/* Pulsing animation for active record state */
+@keyframes pulse-red {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(193, 68, 14, 0.7);
+  }
+  70% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 12px rgba(193, 68, 14, 0);
+  }
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(193, 68, 14, 0);
+  }
+}
+
+.animate-pulse-red {
+  animation: pulse-red 1.5s infinite;
+}
