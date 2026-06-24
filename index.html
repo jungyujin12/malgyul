@@ -1,13 +1,1059 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>말결 — 발표 리허설 도우미</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>말결 — 발표 리허설 도우미</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Nanum+Myeongjo:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FDF6EF;
+  --warm-white: #FFFCF8;
+  --terracotta: #C1440E;
+  --terracotta-light: #E8693A;
+  --terracotta-pale: #F5E6D8;
+  --brown-dark: #3A2A1E;
+  --brown-mid: #7A6355;
+  --brown-light: #B09A8A;
+  --border: #E8DDD3;
+  --border-light: #F0E8E0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans KR', sans-serif; background: var(--cream); color: var(--brown-dark); min-height: 100vh; }
 
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(253,246,239,0.92); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid var(--border); height: 60px;
+  display: flex; align-items: center; padding: 0 48px; justify-content: space-between;
+}
+.nav-logo { font-family: 'Gowun Dodum', serif; font-size: 22px; color: var(--terracotta); cursor: pointer; letter-spacing: -0.5px; }
+.nav-logo em { color: var(--brown-dark); font-style: normal; }
+.nav-links { display: flex; gap: 4px; }
+.nav-link {
+  padding: 7px 18px; border-radius: 20px; font-size: 14px; color: var(--brown-mid);
+  cursor: pointer; border: none; background: transparent; font-family: 'Noto Sans KR', sans-serif; transition: all 0.2s;
+}
+.nav-link:hover { color: var(--brown-dark); }
+.nav-link.active { background: var(--terracotta); color: #fff; font-weight: 500; }
+.nav-cta {
+  padding: 8px 20px; border-radius: 20px; background: var(--brown-dark); color: #fff;
+  border: none; font-size: 13px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: opacity 0.2s;
+}
+.nav-cta:hover { opacity: 0.8; }
+
+/* PAGES */
+.page { display: none; padding-top: 60px; min-height: 100vh; animation: fadeIn 0.35s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* HOME */
+.hero {
+  min-height: calc(100vh - 60px); display: grid; grid-template-columns: 1fr 1fr;
+  align-items: center; padding: 0 80px; gap: 60px; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(193,68,14,0.08) 0%, transparent 70%); pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--terracotta-pale);
+  color: var(--terracotta); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 24px;
+}
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: var(--terracotta); animation: blink 2s infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.hero-title { font-family: 'Nanum Myeongjo', serif; font-size: 56px; line-height: 1.2; color: var(--brown-dark); margin-bottom: 24px; letter-spacing: -1.5px; font-weight: 700; }
+.hero-title em { color: var(--terracotta); font-style: normal; position: relative; }
+.hero-title em::after { content: ''; position: absolute; bottom: 4px; left: 0; right: 0; height: 3px; background: var(--terracotta); opacity: 0.3; border-radius: 2px; }
+.hero-desc { font-size: 16px; color: var(--brown-mid); line-height: 1.8; margin-bottom: 36px; font-weight: 300; word-break: keep-all; }
+.hero-btns { display: flex; gap: 12px; align-items: center; }
+.btn-primary { padding: 14px 32px; background: var(--terracotta); color: #fff; border: none; border-radius: 30px; font-size: 15px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(193,68,14,0.25); }
+.btn-primary:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+.btn-secondary { padding: 14px 24px; background: transparent; color: var(--brown-mid); border: 0.5px solid var(--border); border-radius: 30px; font-size: 14px; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--brown-mid); color: var(--brown-dark); }
+.hero-stats { display: flex; gap: 32px; margin-top: 48px; padding-top: 32px; border-top: 0.5px solid var(--border); }
+.stat-num { font-family: 'Nanum Myeongjo', serif; font-size: 28px; color: var(--terracotta); font-weight: 700; }
+.stat-label { font-size: 12px; color: var(--brown-light); margin-top: 2px; }
+.hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+.hero-mockup { background: #fff; border: 0.5px solid var(--border); border-radius: 20px; padding: 28px; width: 100%; max-width: 420px; box-shadow: 0 20px 60px rgba(58,42,30,0.1); }
+.mockup-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 0.5px solid var(--border-light); }
+.mockup-dots { display: flex; gap: 5px; }
+.mockup-dot { width: 8px; height: 8px; border-radius: 50%; }
+.mockup-title-bar { flex: 1; font-size: 12px; color: var(--brown-light); text-align: center; }
+.mockup-script-preview { background: var(--cream); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; font-size: 13px; color: var(--brown-dark); line-height: 1.7; }
+.hl { background: #FFE0CC; border-radius: 3px; padding: 0 3px; color: var(--terracotta); }
+.mockup-wave { margin-bottom: 16px; }
+.wave-label { font-size: 11px; color: var(--brown-light); margin-bottom: 8px; }
+.wave-bars { display: flex; align-items: center; gap: 2px; height: 40px; }
+.wave-bar { flex: 1; border-radius: 2px; background: var(--terracotta-pale); animation: waveAnim var(--dur) ease-in-out infinite alternate; }
+@keyframes waveAnim { from { height: var(--min-h); } to { height: var(--max-h); } }
+.mockup-score-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.score-card { background: var(--cream); border-radius: 8px; padding: 10px 12px; text-align: center; }
+.score-card-val { font-family: 'Nanum Myeongjo', serif; font-size: 22px; color: var(--terracotta); font-weight: 700; }
+.score-card-label { font-size: 10px; color: var(--brown-light); margin-top: 2px; }
+
+.features-section { padding: 80px 80px; background: #fff; }
+.section-label { font-size: 12px; color: var(--terracotta); font-weight: 500; letter-spacing: 1px; margin-bottom: 12px; }
+.section-title { font-family: 'Nanum Myeongjo', serif; font-size: 36px; color: var(--brown-dark); margin-bottom: 48px; font-weight: 700; letter-spacing: -0.5px; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card { background: var(--cream); border: 0.5px solid var(--border); border-radius: 16px; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+.feature-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(58,42,30,0.07); }
+.feature-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--terracotta-pale); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+.feature-title { font-size: 16px; font-weight: 700; color: var(--brown-dark); margin-bottom: 8px; }
+.feature-desc { font-size: 13px; color: var(--brown-mid); line-height: 1.7; word-break: keep-all; }
+.cta-banner { margin: 0 80px 80px; background: var(--brown-dark); border-radius: 20px; padding: 56px 60px; display: flex; align-items: center; justify-content: space-between; gap: 40px; position: relative; overflow: hidden; }
+.cta-banner::before { content: '말결'; font-family: 'Gowun Dodum', serif; font-size: 180px; color: rgba(255,255,255,0.03); position: absolute; right: 40px; top: -20px; line-height: 1; pointer-events: none; }
+.cta-title { font-family: 'Nanum Myeongjo', serif; font-size: 32px; color: #fff; font-weight: 700; line-height: 1.3; letter-spacing: -0.5px; }
+.cta-title em { color: #E8A87C; font-style: normal; }
+.cta-desc { font-size: 14px; color: rgba(255,255,255,0.5); margin-top: 8px; line-height: 1.6; }
+.btn-cta-white { padding: 14px 36px; background: #fff; color: var(--brown-dark); border: none; border-radius: 30px; font-size: 15px; font-weight: 700; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+.btn-cta-white:hover { background: var(--cream); transform: translateY(-1px); }
+footer { background: var(--brown-dark); padding: 40px 80px; display: flex; align-items: center; justify-content: space-between; }
+.footer-logo { font-family: 'Gowun Dodum', serif; font-size: 20px; color: rgba(255,255,255,0.8); }
+.footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+.footer-badge { font-size: 11px; color: rgba(255,255,255,0.4); text-align: right; line-height: 1.6; }
+
+/* =====================
+   SERVICE PAGE — REAL
+===================== */
+.service-page { padding: 40px 40px 60px; }
+.service-header { text-align: center; margin-bottom: 32px; }
+.service-header h1 { font-family: 'Nanum Myeongjo', serif; font-size: 28px; color: var(--brown-dark); margin-bottom: 6px; }
+.service-header p { font-size: 13px; color: var(--brown-light); }
+
+.app-shell { background: #fff; border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; box-shadow: 0 12px 40px rgba(58,42,30,0.08); }
+.app-topbar { background: #fff; border-bottom: 0.5px solid var(--border-light); padding: 0 20px; height: 50px; display: flex; align-items: center; justify-content: space-between; }
+.app-logo { font-family: 'Gowun Dodum', serif; font-size: 17px; color: var(--terracotta); }
+.app-nav { display: flex; gap: 3px; }
+.app-nav-btn { padding: 5px 12px; border-radius: 14px; font-size: 12px; color: var(--brown-mid); cursor: pointer; border: none; background: transparent; font-family: 'Noto Sans KR', sans-serif; transition: all 0.15s; }
+.app-nav-btn.active { background: var(--terracotta-pale); color: var(--terracotta); font-weight: 500; }
+.app-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--terracotta-pale); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; color: var(--terracotta); }
+.app-layout { display: grid; grid-template-columns: 220px 1fr 260px; min-height: 640px; }
+
+/* Sidebar */
+.app-sidebar { border-right: 0.5px solid var(--border-light); padding: 16px 12px; display: flex; flex-direction: column; gap: 6px; background: var(--warm-white); overflow-y: auto; }
+.sidebar-section-label { font-size: 10px; color: var(--brown-light); font-weight: 500; letter-spacing: 0.5px; margin: 6px 0 3px 4px; }
+.s-item { padding: 8px 10px; border-radius: 8px; cursor: pointer; border: 0.5px solid transparent; transition: all 0.15s; }
+.s-item.active { background: #FDF0E6; border-color: #E8C4A0; }
+.s-item:hover:not(.active) { background: #FAF3EC; }
+.s-item-title { font-size: 12px; font-weight: 500; color: var(--brown-dark); margin-bottom: 2px; }
+.s-item-meta { font-size: 10px; color: var(--brown-light); }
+.s-badge { display: inline-block; padding: 1px 7px; border-radius: 8px; font-size: 9px; font-weight: 500; margin-top: 4px; }
+.s-badge-done { background: #E8F5E9; color: #388E3C; }
+.s-badge-new { background: #FFF3E0; color: #F57C00; }
+.s-badge-ing { background: #E3F2FD; color: #1976D2; }
+.sidebar-spacer { flex: 1; }
+.sidebar-status { display: flex; align-items: center; gap: 6px; padding: 8px 10px; background: #F8F3EE; border-radius: 8px; font-size: 11px; color: var(--brown-mid); }
+.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4CAF50; animation: blink 2s infinite; }
+.status-dot.off { background: #ccc; animation: none; }
+.add-script-btn { width: 100%; padding: 8px; border-radius: 8px; border: 0.5px solid #E8C4A0; background: #FDF0E6; color: var(--terracotta); font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Noto Sans KR', sans-serif; margin-top: 6px; }
+
+/* Center */
+.app-center { display: flex; flex-direction: column; padding: 16px; gap: 12px; overflow-y: auto; background: var(--cream); }
+.panel-box { background: #fff; border: 0.5px solid var(--border); border-radius: 12px; padding: 16px; }
+.panel-box-label { font-size: 11px; color: var(--brown-light); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+
+/* Script edit */
+.script-edit-area {
+  width: 100%; min-height: 80px; border: 0.5px solid var(--border-light); border-radius: 8px;
+  padding: 10px 12px; font-size: 14px; line-height: 1.8; font-family: 'Noto Sans KR', sans-serif;
+  color: var(--brown-dark); background: var(--cream); resize: vertical; outline: none;
+}
+.script-edit-area:focus { border-color: var(--terracotta); }
+.script-edit-hint { font-size: 10px; color: var(--brown-light); margin-top: 6px; }
+
+/* STT Compare display */
+.compare-display { font-size: 14px; line-height: 2; word-break: keep-all; min-height: 60px; }
+.word-ok { background: #D8F5E1; border-radius: 3px; padding: 0 3px; color: #2E7D32; }
+.word-miss { background: #FFE0CC; border-radius: 3px; padding: 0 3px; color: var(--terracotta); text-decoration: underline wavy var(--terracotta); }
+.word-neutral { color: var(--brown-dark); }
+.compare-legend { display: flex; gap: 12px; margin-top: 8px; font-size: 10px; }
+.legend-ok { display: flex; align-items: center; gap: 4px; color: #2E7D32; }
+.legend-ok::before { content: ''; display: inline-block; width: 10px; height: 10px; background: #D8F5E1; border-radius: 2px; }
+.legend-miss { display: flex; align-items: center; gap: 4px; color: var(--terracotta); }
+.legend-miss::before { content: ''; display: inline-block; width: 10px; height: 10px; background: #FFE0CC; border-radius: 2px; }
+
+/* Record */
+.record-center { text-align: center; padding: 16px 16px 4px; }
+.rec-timer-text { font-size: 13px; color: var(--brown-light); margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+.rec-button { width: 60px; height: 60px; border-radius: 50%; background: var(--terracotta); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; transition: transform 0.15s; box-shadow: 0 4px 16px rgba(193,68,14,0.3); }
+.rec-button:hover { transform: scale(1.05); }
+.rec-button.rec-active { animation: recPulse 1.2s infinite; }
+@keyframes recPulse { 0%,100% { box-shadow: 0 4px 16px rgba(193,68,14,0.3); } 50% { box-shadow: 0 4px 24px rgba(193,68,14,0.6); } }
+.rec-inner { width: 22px; height: 22px; background: #fff; border-radius: 50%; transition: border-radius 0.2s, width 0.2s, height 0.2s; }
+.rec-active .rec-inner { border-radius: 4px; width: 18px; height: 18px; }
+.rec-hint-text { font-size: 12px; color: var(--terracotta); font-weight: 500; margin-bottom: 4px; }
+.rec-sub-text { font-size: 10px; color: var(--brown-light); }
+
+.stt-live-text {
+  background: #FFFBF8; border: 0.5px solid var(--border-light); border-radius: 8px;
+  padding: 10px 12px; font-size: 12px; color: var(--brown-mid); line-height: 1.6; min-height: 36px;
+  margin-top: 10px; word-break: keep-all;
+}
+.stt-live-text.active { border-color: var(--terracotta); color: var(--brown-dark); }
+
+/* Wave */
+.wave-container { width: 100%; height: 64px; display: block; }
+
+/* Right Panel */
+.app-right { border-left: 0.5px solid var(--border-light); padding: 16px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; background: var(--warm-white); }
+.r-section-title { font-size: 11px; color: var(--brown-light); font-weight: 500; letter-spacing: 0.3px; margin-bottom: 8px; }
+.score-donut-wrap { display: flex; justify-content: center; margin-bottom: 10px; position: relative; }
+.donut-label { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.donut-score { font-family: 'Nanum Myeongjo', serif; font-size: 22px; font-weight: 700; color: var(--terracotta); }
+.donut-sub { font-size: 10px; color: var(--brown-light); }
+.score-bars-list { display: flex; flex-direction: column; gap: 7px; }
+.score-bar-item { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+.score-bar-label { color: var(--brown-mid); width: 52px; flex-shrink: 0; }
+.score-bar-track { flex: 1; height: 6px; background: var(--border-light); border-radius: 3px; overflow: hidden; }
+.score-bar-progress { height: 100%; border-radius: 3px; background: var(--terracotta); transition: width 0.6s ease; }
+.score-bar-num { font-weight: 500; color: var(--brown-dark); width: 24px; text-align: right; }
+
+.feedback-panel { background: #FDF0E6; border: 0.5px solid #E8C4A0; border-radius: 10px; padding: 12px; }
+.feedback-item { display: flex; gap: 7px; font-size: 11px; color: var(--brown-dark); line-height: 1.6; margin-bottom: 7px; }
+.feedback-item:last-child { margin-bottom: 0; }
+.fi-icon { flex-shrink: 0; font-size: 12px; }
+.tip-panel { background: #FFF8F3; border-left: 3px solid var(--terracotta); border-radius: 0 8px 8px 0; padding: 10px 12px; font-size: 11px; color: #5A3A2A; line-height: 1.6; }
+.history-list { display: flex; flex-direction: column; gap: 0; }
+.history-entry { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--border-light); }
+.h-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--terracotta); flex-shrink: 0; }
+.h-dot.low { background: #E8C4A0; }
+.h-label { flex: 1; font-size: 11px; color: var(--brown-mid); }
+.h-score { font-size: 12px; font-weight: 500; color: var(--brown-dark); }
+
+/* Perm-miss 연습 카드 */
+.retry-cards { display: flex; flex-direction: column; gap: 6px; }
+.retry-card { background: #FFF0E8; border: 0.5px solid #F5C4A4; border-radius: 8px; padding: 8px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+.retry-word { font-weight: 700; color: var(--terracotta); }
+.retry-hint { font-size: 10px; color: var(--brown-light); }
+
+/* Mic error banner */
+.mic-banner {
+  background: #FFF3E0; border: 0.5px solid #FFCC80; border-radius: 8px;
+  padding: 10px 14px; font-size: 12px; color: #E65100; display: none; align-items: center; gap: 8px;
+}
+.mic-banner.show { display: flex; }
+
+/* INFO PAGE */
+.info-page { padding: 60px 80px 80px; }
+.info-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px; padding-bottom: 80px; border-bottom: 0.5px solid var(--border); }
+.info-eyebrow { display: inline-block; background: var(--terracotta-pale); color: var(--terracotta); padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
+.info-h1 { font-family: 'Nanum Myeongjo', serif; font-size: 40px; line-height: 1.25; color: var(--brown-dark); margin-bottom: 20px; font-weight: 700; letter-spacing: -1px; }
+.info-h1 em { color: var(--terracotta); font-style: normal; }
+.info-lead { font-size: 15px; color: var(--brown-mid); line-height: 1.85; font-weight: 300; word-break: keep-all; }
+.info-hero-right { background: #fff; border: 0.5px solid var(--border); border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+.story-item { display: flex; gap: 16px; align-items: flex-start; }
+.story-num { font-family: 'Nanum Myeongjo', serif; font-size: 32px; color: var(--terracotta-pale); font-weight: 700; line-height: 1; flex-shrink: 0; width: 32px; }
+.story-title { font-size: 14px; font-weight: 700; color: var(--brown-dark); margin-bottom: 4px; }
+.story-desc { font-size: 12px; color: var(--brown-mid); line-height: 1.6; word-break: keep-all; }
+.how-section { margin-bottom: 80px; }
+.how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; background: #fff; border: 0.5px solid var(--border); border-radius: 20px; overflow: hidden; }
+.how-step { padding: 32px 24px; border-right: 0.5px solid var(--border); }
+.how-step:last-child { border-right: none; }
+.how-step-num { font-family: 'Nanum Myeongjo', serif; font-size: 48px; color: var(--terracotta-pale); font-weight: 700; line-height: 1; margin-bottom: 12px; }
+.how-step-icon { width: 36px; height: 36px; background: var(--terracotta-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; margin-bottom: 14px; }
+.how-step-title { font-size: 15px; font-weight: 700; color: var(--brown-dark); margin-bottom: 8px; }
+.how-step-desc { font-size: 12px; color: var(--brown-mid); line-height: 1.7; word-break: keep-all; }
+.features-detail { margin-bottom: 80px; }
+.features-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.fd-card { background: #fff; border: 0.5px solid var(--border); border-radius: 16px; padding: 28px; display: flex; gap: 20px; align-items: flex-start; }
+.fd-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.fd-icon.orange { background: var(--terracotta-pale); }
+.fd-icon.brown { background: #EDE3D8; }
+.fd-title { font-size: 15px; font-weight: 700; color: var(--brown-dark); margin-bottom: 6px; }
+.fd-desc { font-size: 13px; color: var(--brown-mid); line-height: 1.7; word-break: keep-all; }
+.fd-tag { display: inline-block; margin-top: 8px; padding: 3px 10px; background: #FFF3E0; color: #E65100; border-radius: 10px; font-size: 10px; font-weight: 500; }
+.team-section { margin-bottom: 60px; }
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.team-card { background: #fff; border: 0.5px solid var(--border); border-radius: 16px; padding: 24px; text-align: center; }
+.team-avatar { width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; }
+.ta-terracotta { background: var(--terracotta); }
+.ta-brown { background: var(--brown-mid); }
+.ta-light { background: #B09A8A; }
+.team-name { font-size: 15px; font-weight: 700; color: var(--brown-dark); margin-bottom: 4px; }
+.team-role { font-size: 12px; color: var(--terracotta); font-weight: 500; margin-bottom: 8px; }
+.team-desc { font-size: 12px; color: var(--brown-mid); line-height: 1.6; word-break: keep-all; }
+
+/* APPLY PAGE */
+.apply-wrap { max-width: 800px; margin: 0 auto; padding: 48px 40px 80px; }
+.apply-page-title { font-family: 'Nanum Myeongjo', serif; font-size: 32px; color: var(--brown-dark); font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+.apply-page-sub { font-size: 14px; color: var(--brown-light); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+.apply-badge { background: var(--terracotta-pale); color: var(--terracotta); padding: 3px 12px; border-radius: 12px; font-size: 12px; font-weight: 500; }
+.q-card { background: #fff; border: 0.5px solid var(--border); border-radius: 16px; padding: 28px 32px; margin-bottom: 20px; }
+.q-label { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.q-num { width: 28px; height: 28px; background: var(--terracotta); color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.q-title { font-size: 15px; font-weight: 700; color: var(--brown-dark); }
+.q-required { font-size: 11px; color: var(--terracotta); margin-left: auto; }
+.q-answer { background: var(--cream); border: 0.5px solid var(--border-light); border-radius: 10px; padding: 16px 20px; font-size: 14px; color: var(--brown-dark); line-height: 1.85; word-break: keep-all; }
+.q-answer p + p { margin-top: 12px; }
+.field-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.field-option { padding: 8px 18px; border-radius: 20px; border: 0.5px solid var(--border); font-size: 13px; color: var(--brown-mid); cursor: pointer; font-family: 'Noto Sans KR', sans-serif; transition: all 0.15s; background: #fff; }
+.field-option.selected { background: var(--terracotta); color: #fff; border-color: var(--terracotta); font-weight: 500; }
+.q-optional-tag { font-size: 11px; color: var(--brown-light); margin-left: auto; }
+.empty-answer { background: var(--cream); border: 0.5px dashed var(--border); border-radius: 10px; padding: 20px; text-align: center; font-size: 13px; color: var(--brown-light); }
+.apply-divider { border: none; border-top: 0.5px solid var(--border); margin: 36px 0; }
+.pipeline-section-title { font-family: 'Nanum Myeongjo', serif; font-size: 22px; font-weight: 700; color: var(--brown-dark); margin-bottom: 6px; }
+.pipeline-section-sub { font-size: 13px; color: var(--brown-light); margin-bottom: 24px; }
+.pipeline-flow { display: flex; flex-direction: column; }
+.pipeline-step { display: flex; gap: 20px; align-items: flex-start; padding: 20px 24px; background: #fff; border: 0.5px solid var(--border); border-radius: 0; transition: all 0.3s; }
+.pipeline-step:first-child { border-radius: 14px 14px 0 0; }
+.pipeline-step:last-child { border-radius: 0 0 14px 14px; }
+.pipeline-step:not(:last-child) { border-bottom: none; }
+.pipeline-step.verified { background: #FDFAF7; border-color: #D4B896; }
+.pipeline-step.verified .ps-check { background: var(--terracotta); color: #fff; }
+.ps-left { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
+.ps-check { width: 32px; height: 32px; border-radius: 50%; background: var(--cream); border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--brown-light); transition: all 0.3s; flex-shrink: 0; }
+.ps-line { width: 1.5px; flex: 1; min-height: 24px; background: var(--border); margin-top: 4px; }
+.ps-title { font-size: 14px; font-weight: 700; color: var(--brown-dark); margin-bottom: 4px; }
+.ps-desc { font-size: 12px; color: var(--brown-mid); line-height: 1.6; word-break: keep-all; }
+.ps-tag { display: inline-block; margin-top: 6px; padding: 2px 10px; border-radius: 10px; font-size: 10px; font-weight: 500; }
+.ps-tag-match { background: #E8F5E9; color: #2E7D32; }
+.ps-tag-check { background: #FFF3E0; color: #E65100; }
+.ps-tag-plan { background: #E3F2FD; color: #1565C0; }
+.verify-btn { width: 100%; padding: 14px; background: var(--brown-dark); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; margin-top: 20px; transition: all 0.2s; }
+.verify-btn:hover { background: var(--terracotta); }
+#pipeline-result { display: none; align-items: center; gap: 12px; background: #E8F5E9; border: 0.5px solid #A5D6A7; border-radius: 12px; padding: 16px 20px; margin-top: 16px; }
+.result-icon { font-size: 22px; }
+.result-text { font-size: 13px; color: #2E7D32; line-height: 1.6; word-break: keep-all; }
+.apply-submit-wrap { margin-top: 40px; background: var(--brown-dark); border-radius: 16px; padding: 32px; text-align: center; }
+.apply-submit-title { font-family: 'Nanum Myeongjo', serif; font-size: 20px; color: #fff; margin-bottom: 8px; }
+.apply-submit-desc { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; line-height: 1.6; }
+.submit-btn { padding: 13px 40px; background: var(--terracotta); color: #fff; border: none; border-radius: 30px; font-size: 14px; font-weight: 500; font-family: 'Noto Sans KR', sans-serif; cursor: pointer; transition: all 0.2s; }
+.submit-btn:hover { background: var(--terracotta-light); transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">말<em>결</em></div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-home" onclick="showPage('home')">홈</button>
+    <button class="nav-link" id="nav-service" onclick="showPage('service')">서비스</button>
+    <button class="nav-link" id="nav-info" onclick="showPage('info')">인포</button>
+    <button class="nav-link" id="nav-apply" style="border: 0.5px solid var(--terracotta); color: var(--terracotta);" onclick="showPage('apply')">모두의창업 Info</button>
+  </div>
+  <button class="nav-cta" onclick="showPage('service')">지금 연습하기 →</button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span></span>청각장애 대학생을 위한 발표 리허설</div>
+      <h1 class="hero-title">내 목소리를<br><em>눈으로</em> 확인하세요</h1>
+      <p class="hero-desc">말결은 청각장애 대학생이 발표 전 자신의 발음과<br>전달력을 시각적으로 확인하고 연습할 수 있는<br>배리어프리 발표 리허설 플랫폼입니다.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('service')">무료로 연습 시작하기</button>
+        <button class="btn-secondary" onclick="showPage('info')">서비스 알아보기 →</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">4가지</div><div class="stat-label">핵심 분석 지표</div></div>
+        <div class="stat-item"><div class="stat-num">실시간</div><div class="stat-label">음파 시각화</div></div>
+        <div class="stat-item"><div class="stat-num">배리어프리</div><div class="stat-label">유니버설 디자인</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mockup">
+        <div class="mockup-header">
+          <div class="mockup-dots">
+            <div class="mockup-dot" style="background:#FFB3A7"></div>
+            <div class="mockup-dot" style="background:#FFD9B3"></div>
+            <div class="mockup-dot" style="background:#B3E5D1"></div>
+          </div>
+          <div class="mockup-title-bar">말결 — 발표 리허설</div>
+        </div>
+        <div class="mockup-script-preview">안녕하세요, 저는 <span class="hl">산업디자인학과</span> 3학년입니다.<br>저는 <span class="hl">감성과 공간</span>을 연결하는 디자인에 관심이 많습니다.</div>
+        <div class="mockup-wave">
+          <div class="wave-label">실시간 음파</div>
+          <div class="wave-bars" id="heroBars"></div>
+        </div>
+        <div class="mockup-score-row">
+          <div class="score-card"><div class="score-card-val">78</div><div class="score-card-label">발음 명확도</div></div>
+          <div class="score-card"><div class="score-card-val">82</div><div class="score-card-label">전달력 점수</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section">
+    <div class="section-label">FEATURES</div>
+    <h2 class="section-title">말결이 제공하는 것들</h2>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">〰️</div><div class="feature-title">실시간 음파 시각화</div><div class="feature-desc">발화할 때 발생하는 소리를 실시간 파형으로 표시합니다. 소리의 크기와 리듬을 눈으로 확인하며 연습할 수 있습니다.</div></div>
+      <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">대본 비교 분석</div><div class="feature-desc">발표 대본을 입력하고 녹음하면 원문과 음성 인식 결과를 단어별로 비교해 잘 전달된 단어와 연습이 필요한 단어를 색상으로 보여줍니다.</div></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><div class="feature-title">연습 기록 저장</div><div class="feature-desc">매번 연습 결과가 자동으로 저장됩니다. 점수 변화를 추적하며 발전 과정을 확인하세요.</div></div>
+    </div>
+  </section>
+
+  <div class="cta-banner">
+    <div>
+      <div class="cta-title">지금 바로<br><em>말결</em>을 시작해보세요</div>
+      <div class="cta-desc">청각장애 여부와 관계없이 누구나 사용할 수 있는 배리어프리 서비스</div>
+    </div>
+    <button class="btn-cta-white" onclick="showPage('service')">무료로 시작하기 →</button>
+  </div>
+
+  <footer>
+    <div class="footer-logo">말결</div>
+    <div class="footer-copy">© 2025 말결 팀. All Rights Reserved.</div>
+    <div class="footer-badge">배재대학교 산업디자인학과<br>창업지원단 지원 프로젝트</div>
+  </footer>
+</div>
+
+<!-- SERVICE PAGE — FUNCTIONAL -->
+<div class="page" id="page-service">
+  <div class="service-page">
+    <div class="service-header">
+      <h1>발표 리허설 서비스</h1>
+      <p>대본을 입력하고 🎙 녹화 버튼을 눌러 연습을 시작하세요</p>
+    </div>
+
+    <div id="micBanner" class="mic-banner">
+      ⚠️ 마이크 접근이 거부되었습니다. 브라우저 주소창의 🔒 아이콘에서 마이크 권한을 허용해주세요.
+    </div>
+
+    <div class="app-shell" style="margin-top:12px">
+      <div class="app-topbar">
+        <div class="app-logo">말결</div>
+        <div class="app-nav">
+          <button class="app-nav-btn active">리허설</button>
+          <button class="app-nav-btn" onclick="showPage('history')">내 기록</button>
+        </div>
+        <div class="app-avatar">나</div>
+      </div>
+
+      <div class="app-layout">
+        <!-- Sidebar: Script List -->
+        <div class="app-sidebar">
+          <div class="sidebar-section-label">내 스크립트</div>
+          <div id="scriptList"></div>
+          <div class="sidebar-spacer"></div>
+          <div class="sidebar-status">
+            <div class="status-dot" id="micStatusDot"></div>
+            <span id="micStatusText">마이크 연결 중...</span>
+          </div>
+          <button class="add-script-btn" onclick="addScript()">+ 새 스크립트 추가</button>
+        </div>
+
+        <!-- Center Panel -->
+        <div class="app-center">
+          <!-- Script Input -->
+          <div class="panel-box">
+            <div class="panel-box-label">📄 대본 입력 — <span id="currentScriptName">스크립트를 선택하세요</span></div>
+            <textarea class="script-edit-area" id="scriptInput" placeholder="발표할 대본을 여기에 입력하세요.&#10;예) 안녕하세요, 저는 산업디자인학과 3학년 김지수입니다."></textarea>
+            <div class="script-edit-hint">💡 대본을 입력하고 아래 녹화 버튼을 누르면 음성 인식과 비교합니다</div>
+          </div>
+
+          <!-- Record -->
+          <div class="panel-box">
+            <div class="rec-timer-text" id="svcTimer">00:00</div>
+            <div class="record-center">
+              <button class="rec-button" id="svcRecBtn" onclick="toggleRec()">
+                <div class="rec-inner"></div>
+              </button>
+              <div class="rec-hint-text" id="svcHint">▶ 눌러서 녹화 시작</div>
+              <div class="rec-sub-text">크롬 브라우저에서 마이크 권한을 허용해주세요</div>
+            </div>
+            <div class="stt-live-text" id="sttLive">🎤 음성이 인식되면 여기에 표시됩니다...</div>
+          </div>
+
+          <!-- Wave -->
+          <div class="panel-box">
+            <div class="panel-box-label">〰️ 실시간 음파 시각화</div>
+            <svg class="wave-container" viewBox="0 0 500 64" id="svcWave" preserveAspectRatio="none"></svg>
+          </div>
+
+          <!-- Compare Result -->
+          <div class="panel-box" id="comparePanel" style="display:none">
+            <div class="panel-box-label">📊 대본 vs 인식 결과 비교</div>
+            <div class="compare-display" id="compareDisplay"></div>
+            <div class="compare-legend">
+              <div class="legend-ok">잘 전달됨</div>
+              <div class="legend-miss">다시 연습 필요</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="app-right">
+          <div>
+            <div class="r-section-title">종합 전달력 점수</div>
+            <div class="score-donut-wrap">
+              <svg width="90" height="90" viewBox="0 0 90 90">
+                <circle cx="45" cy="45" r="36" fill="none" stroke="#F0E6DC" stroke-width="8"/>
+                <circle id="donutCircle" cx="45" cy="45" r="36" fill="none" stroke="#C1440E" stroke-width="8"
+                  stroke-dasharray="226" stroke-dashoffset="226" stroke-linecap="round" transform="rotate(-90 45 45)"
+                  style="transition: stroke-dashoffset 0.8s ease"/>
+              </svg>
+              <div class="donut-label">
+                <div class="donut-score" id="donutScore">—</div>
+                <div class="donut-sub">점</div>
+              </div>
+            </div>
+            <div class="score-bars-list">
+              <div class="score-bar-item">
+                <span class="score-bar-label">발음 일치율</span>
+                <div class="score-bar-track"><div class="score-bar-progress" id="bar1" style="width:0%"></div></div>
+                <span class="score-bar-num" id="num1">—</span>
+              </div>
+              <div class="score-bar-item">
+                <span class="score-bar-label">말 속도</span>
+                <div class="score-bar-track"><div class="score-bar-progress" id="bar2" style="width:0%; background:#E8A87C"></div></div>
+                <span class="score-bar-num" id="num2">—</span>
+              </div>
+              <div class="score-bar-item">
+                <span class="score-bar-label">연속성</span>
+                <div class="score-bar-track"><div class="score-bar-progress" id="bar3" style="width:0%"></div></div>
+                <span class="score-bar-num" id="num3">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="r-section-title">이번 연습 피드백</div>
+            <div class="feedback-panel" id="feedbackPanel">
+              <div class="feedback-item"><span class="fi-icon">💡</span><span>대본을 입력하고 녹화를 시작해보세요.</span></div>
+            </div>
+          </div>
+
+          <div class="tip-panel" id="tipPanel">
+            <strong>오늘의 팁</strong><br>
+            자음(ㄱ,ㄷ,ㅂ)의 입 모양을 과장하면 상대방이 더 잘 이해합니다.
+          </div>
+
+          <div>
+            <div class="r-section-title">연습이 필요한 단어</div>
+            <div class="retry-cards" id="retryCards">
+              <div style="font-size:11px; color:var(--brown-light)">연습 후 표시됩니다</div>
+            </div>
+          </div>
+
+          <div>
+            <div class="r-section-title">최근 연습 기록</div>
+            <div class="history-list" id="historyList">
+              <div style="font-size:11px; color:var(--brown-light)">기록 없음</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- INFO PAGE -->
+<div class="page" id="page-info">
+  <div class="info-page">
+    <div class="info-hero">
+      <div class="info-hero-left">
+        <div class="info-eyebrow">개발 배경</div>
+        <h1 class="info-h1">발표가 두렵지 않도록,<br><em>소리를 눈으로</em> 보다</h1>
+        <p class="info-lead">청각장애 대학생은 자신의 발음이 타인에게 어떻게 들리는지 확인할 방법이 없습니다. 발표를 앞두고 느끼는 불안감은 비장애인과는 차원이 다릅니다.<br><br>말결은 이 문제를 해결하기 위해 탄생했습니다. 시각적 피드백 하나로 발표에 대한 자신감을 되찾을 수 있도록, 산업디자인 전공의 감성과 기술을 결합했습니다.</p>
+      </div>
+      <div class="info-hero-right">
+        <div class="story-item"><div class="story-num">01</div><div class="story-text"><div class="story-title">문제 발견</div><div class="story-desc">청각장애 대학생이 발표 전 자신의 발음을 직접 확인할 수 있는 도구가 없다는 문제를 발견했습니다.</div></div></div>
+        <div class="story-item"><div class="story-num">02</div><div class="story-text"><div class="story-title">아이디어</div><div class="story-desc">음파 시각화와 STT 비교를 결합하면 청각 정보를 시각 정보로 변환할 수 있다는 아이디어에서 출발했습니다.</div></div></div>
+        <div class="story-item"><div class="story-num">03</div><div class="story-text"><div class="story-title">유니버설 디자인</div><div class="story-desc">장애인만을 위한 서비스가 아닌, 발표 불안을 가진 모든 대학생이 사용할 수 있는 배리어프리 서비스를 목표로 합니다.</div></div></div>
+      </div>
+    </div>
+
+    <div class="how-section">
+      <div class="section-label">HOW TO USE</div>
+      <h2 class="section-title">이렇게 사용하세요</h2>
+      <div class="how-grid">
+        <div class="how-step"><div class="how-step-num">01</div><div class="how-step-icon">📝</div><div class="how-step-title">대본 입력</div><div class="how-step-desc">서비스 페이지에서 발표할 내용을 입력하거나 붙여넣기 하세요.</div></div>
+        <div class="how-step"><div class="how-step-num">02</div><div class="how-step-icon">🎙</div><div class="how-step-title">녹화 시작</div><div class="how-step-desc">녹화 버튼을 누르고 대본대로 발표해보세요. 음파가 실시간으로 시각화됩니다.</div></div>
+        <div class="how-step"><div class="how-step-num">03</div><div class="how-step-icon">📊</div><div class="how-step-title">비교 확인</div><div class="how-step-desc">녹화가 끝나면 원문과 인식 결과를 단어별로 비교해 결과를 확인합니다.</div></div>
+        <div class="how-step"><div class="how-step-num">04</div><div class="how-step-icon">🔁</div><div class="how-step-title">반복 연습</div><div class="how-step-desc">점수와 피드백을 보고 어려운 단어를 집중 연습합니다. 기록이 자동 저장됩니다.</div></div>
+      </div>
+    </div>
+
+    <div class="features-detail">
+      <div class="section-label">FEATURES</div>
+      <h2 class="section-title">핵심 기능 상세</h2>
+      <div class="features-detail-grid">
+        <div class="fd-card"><div class="fd-icon orange">〰️</div><div class="fd-text"><div class="fd-title">실시간 음파 시각화</div><div class="fd-desc">Web Audio API로 실제 마이크 입력을 분석해 음파를 실시간으로 표시합니다.</div><span class="fd-tag">구현 완료</span></div></div>
+        <div class="fd-card"><div class="fd-icon orange">📝</div><div class="fd-text"><div class="fd-title">STT 대본 비교</div><div class="fd-desc">Web Speech API로 음성을 텍스트로 변환하고 원본 대본과 단어별 일치 여부를 색상으로 표시합니다.</div><span class="fd-tag">구현 완료</span></div></div>
+        <div class="fd-card"><div class="fd-icon brown">📊</div><div class="fd-text"><div class="fd-title">자동 점수 계산</div><div class="fd-desc">발음 일치율, 말 속도, 연속성을 기반으로 종합 전달력 점수를 자동 계산합니다.</div><span class="fd-tag">구현 완료</span></div></div>
+        <div class="fd-card"><div class="fd-icon brown">🗂</div><div class="fd-text"><div class="fd-title">연습 기록 저장</div><div class="fd-desc">LocalStorage에 연습 기록이 자동 저장되어 점수 변화와 취약 단어를 추적할 수 있습니다.</div><span class="fd-tag">구현 완료</span></div></div>
+      </div>
+    </div>
+
+    <div class="team-section">
+      <div class="section-label">TEAM</div>
+      <h2 class="section-title">만든 사람들</h2>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar ta-terracotta">디</div><div class="team-name">디자이너</div><div class="team-role">UI/UX · 서비스 기획</div><div class="team-desc">배재대학교 산업디자인학과. 감성힐링 작가로 활동하며 달항아리 모티브 3D프린팅 생분해 화분 제작 경험 보유.</div></div>
+        <div class="team-card"><div class="team-avatar ta-brown">개</div><div class="team-name">개발자</div><div class="team-role">프론트엔드 · 기술 서포트</div><div class="team-desc">Web Audio API 기반 음파 시각화 및 Web Speech API STT 비교 기능 구현 담당.</div></div>
+        <div class="team-card"><div class="team-avatar ta-light">자</div><div class="team-name">자문</div><div class="team-role">배리어프리 UX 자문</div><div class="team-desc">청각장애 당사자 관점에서 서비스의 접근성과 실사용 가능성을 검토합니다.</div></div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-logo">말결</div>
+    <div class="footer-copy">© 2025 말결 팀. All Rights Reserved.</div>
+    <div class="footer-badge">배재대학교 산업디자인학과<br>창업지원단 지원 프로젝트</div>
+  </footer>
+</div>
+
+<!-- APPLY PAGE -->
+<div class="page" id="page-apply">
+  <div class="apply-wrap">
+    <div class="apply-badge">모두의창업 아이디어 공모</div>
+    <h1 class="apply-page-title" style="margin-top:12px">모두의창업 Info</h1>
+    <div class="apply-page-sub">말결 팀의 아이디어 공모 제출 내용을 확인하세요</div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q1</div><div class="q-title">나의 아이디어를 한 줄로 소개해주세요.</div><div class="q-required">필수</div></div><div class="q-answer">청각장애 대학생이 발표 전 자신의 발음과 전달력을 시각적으로 확인하고 연습할 수 있는 발표 리허설 서비스입니다.</div></div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q2</div><div class="q-title">아이디어를 떠올린 배경 이야기를 들려주세요.</div><div class="q-required">필수</div></div><div class="q-answer"><p>대학교 근로 도우미로 활동하면서 같은 학부의 청각장애 학생과 수업을 함께 듣게 되었습니다. 발표 상황에서 발음이 새거나 전달이 잘 되지 않아 어려움을 겪는 모습을 보았고, 청각장애 학생이 발표 전에 자신의 발음이 상대방에게 어떻게 들리는지 스스로 확인하기 어렵다고 느꼈습니다.</p><p>기존의 발음 교정 앱은 청각장애 대학생의 실제 대학생활 맥락에 맞춘 발표 연습 공간이 부족합니다. 그래서 발음을 완벽하게 교정하는 서비스가 아니라, 발표 전에 자신의 말이 얼마나 전달되는지 시각적으로 점검하고 반복 연습할 수 있는 서비스를 기획하게 되었습니다.</p></div></div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q3</div><div class="q-title">아이디어는 누구의 어떤 문제를 해결해주나요?</div><div class="q-required">필수</div></div><div class="q-answer"><p>이 아이디어는 발표와 구두 설명이 필요한 청각장애 대학생의 문제를 해결합니다.</p><p>청각장애 대학생은 자신의 발음이나 말의 전달력을 스스로 객관적으로 확인하기 어렵고, 발표 전 피드백을 받을 사람도 항상 곁에 있지 않습니다.</p><p>이 서비스는 발표 대본을 입력하고 녹음하면, 원래 대본과 음성 인식 결과를 비교해 잘 전달된 문장과 다시 연습이 필요한 단어를 시각적으로 보여줍니다.</p></div></div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q4</div><div class="q-title">아이디어를 어떻게 실현하고 싶으신가요?</div><div class="q-required">필수</div></div><div class="q-answer"><p>MVP 단계에서는 <strong>발표 대본 입력 → 발표 녹음 → 음성 인식 결과 비교 → 어려운 단어 표시 → 반복 연습 리포트 제공</strong> 구조로 실현합니다.</p><p>주요 기능: 발표 대본 입력 / 문장별 녹음 / 원문과 음성 인식 결과 비교 / 전달이 어려운 단어 표시 / 발표 전 최종 리포트 제공</p></div></div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q5</div><div class="q-title">사업 분야를 선택해주세요.</div><div class="q-required">필수</div></div><div class="field-options"><button class="field-option" onclick="selectField(this)">에듀테크 / 교육</button><button class="field-option" onclick="selectField(this)">소셜임팩트 / 사회적기업</button><button class="field-option" onclick="selectField(this)">헬스케어 / 복지</button><button class="field-option selected" onclick="selectField(this)">IT / 플랫폼 서비스</button><button class="field-option" onclick="selectField(this)">콘텐츠 / 미디어</button><button class="field-option" onclick="selectField(this)">기타</button></div></div>
+    <div class="q-card"><div class="q-label"><div class="q-num">Q8</div><div class="q-title">나의 아이디어를 소개하는 영상 링크</div><div class="q-optional-tag">선택</div></div><div class="empty-answer">🎬 영상 링크 미제출 (선택 항목)<br><span style="font-size:11px; color:var(--brown-light); margin-top:4px; display:block">추후 유튜브 링크로 등록 가능합니다</span></div></div>
+    <hr class="apply-divider">
+    <div class="pipeline-section-title">서비스 파이프라인 검증</div>
+    <div class="pipeline-section-sub">제출 내용이 실제 서비스 흐름과 일치하는지 확인합니다</div>
+    <div class="pipeline-flow">
+      <div class="pipeline-step" id="ps1"><div class="ps-left"><div class="ps-check">①</div><div class="ps-line"></div></div><div class="ps-content"><div class="ps-title">발표 대본 입력</div><div class="ps-desc">사용자가 발표할 스크립트를 입력합니다.</div><span class="ps-tag ps-tag-match">✓ 구현됨</span></div></div>
+      <div class="pipeline-step" id="ps2"><div class="ps-left"><div class="ps-check">②</div><div class="ps-line"></div></div><div class="ps-content"><div class="ps-title">녹음 및 음파 시각화</div><div class="ps-desc">실제 마이크로 녹음하면 Web Audio API로 음파 파형이 실시간 시각화됩니다.</div><span class="ps-tag ps-tag-match">✓ 구현됨</span></div></div>
+      <div class="pipeline-step" id="ps3"><div class="ps-left"><div class="ps-check">③</div><div class="ps-line"></div></div><div class="ps-content"><div class="ps-title">STT 원문 비교</div><div class="ps-desc">Web Speech API로 인식된 결과를 원문 대본과 단어별로 비교해 색상으로 표시합니다.</div><span class="ps-tag ps-tag-match">✓ 구현됨</span></div></div>
+      <div class="pipeline-step" id="ps4"><div class="ps-left"><div class="ps-check">④</div><div class="ps-line"></div></div><div class="ps-content"><div class="ps-title">점수 및 피드백 리포트</div><div class="ps-desc">발음 일치율·말 속도·연속성 3가지 지표로 점수를 계산하고 피드백을 제공합니다.</div><span class="ps-tag ps-tag-match">✓ 구현됨</span></div></div>
+      <div class="pipeline-step" id="ps5"><div class="ps-left"><div class="ps-check">⑤</div></div><div class="ps-content"><div class="ps-title">반복 연습 + 기록 저장</div><div class="ps-desc">연습 기록이 자동 저장되어 점수 변화를 추적하고 취약 단어를 집중 연습할 수 있습니다.</div><span class="ps-tag ps-tag-match">✓ 구현됨</span></div></div>
+    </div>
+    <button class="verify-btn" onclick="checkPipeline()">✅ 파이프라인 검증 확인하기</button>
+    <div id="pipeline-result"><div class="result-icon">🎉</div><div class="result-text"><strong>파이프라인 검증 완료!</strong><br>Q4에서 제시한 MVP 구조가 말결 서비스와 모두 일치합니다.</div></div>
+    <div class="apply-submit-wrap"><div class="apply-submit-title">제출 준비가 되셨나요?</div><div class="apply-submit-desc">위 Q1~Q5 내용을 모두의창업 공모 사이트에 붙여넣기 하세요.</div><button class="submit-btn">모두의창업 사이트 바로가기 →</button></div>
+  </div>
+</div>
+
+<script>
+// ========================
+//  PAGE NAVIGATION
+// ========================
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(n => {
+    n.classList.remove('active');
+    if (n.id === 'nav-apply') {
+      n.style.cssText = 'border: 0.5px solid var(--terracotta); color: var(--terracotta); background: transparent;';
+    } else {
+      n.style.cssText = '';
+    }
+  });
+  document.getElementById('page-' + page).classList.add('active');
+  const btn = document.getElementById('nav-' + page);
+  if (btn) {
+    btn.classList.add('active');
+    if (page === 'apply') btn.style.cssText = 'background: var(--terracotta); color: #fff; border: none;';
+  }
+}
+
+// ========================
+//  HERO WAVE ANIMATION
+// ========================
+(function buildHero() {
+  const c = document.getElementById('heroBars');
+  if (!c) return;
+  const data = [[4,20],[6,28],[10,36],[14,44],[20,52],[28,56],[22,50],[18,46],[24,54],[30,58],[26,52],[20,48],[16,42],[12,38],[8,32],[6,26],[10,34],[14,40],[18,46],[22,50],[26,54],[20,48],[16,44],[12,38],[8,30],[6,24],[4,18],[6,22],[8,28],[10,34]];
+  data.forEach(([mn,mx], i) => {
+    const b = document.createElement('div');
+    b.className = 'wave-bar';
+    b.style.setProperty('--min-h', mn+'px');
+    b.style.setProperty('--max-h', mx+'px');
+    b.style.setProperty('--dur', (0.6+Math.random()*0.8).toFixed(2)+'s');
+    b.style.animationDelay = (Math.random()*0.5).toFixed(2)+'s';
+    b.style.background = i > 15 ? '#E8DDD3' : '#C1440E';
+    c.appendChild(b);
+  });
+})();
+
+// ========================
+//  SCRIPT MANAGEMENT
+// ========================
+let scripts = JSON.parse(localStorage.getItem('malgyeol_scripts') || '[]');
+let currentScriptIdx = 0;
+
+if (scripts.length === 0) {
+  scripts = [
+    { name: '자기소개 발표', text: '안녕하세요, 저는 산업디자인학과 3학년 김지수입니다. 저는 평소에 사람들의 감정과 공간을 연결하는 디자인에 관심이 많고, 특히 지속 가능한 소재를 활용한 오브제 작업을 해왔습니다.' },
+    { name: '팀 프로젝트 발표', text: '안녕하세요, 오늘은 저희 팀의 디자인 프로젝트를 발표하겠습니다. 저희 팀은 총 세 명으로 구성되었으며 각자 기획, 디자인, 개발을 담당했습니다.' },
+  ];
+  saveScripts();
+}
+
+function saveScripts() {
+  localStorage.setItem('malgyeol_scripts', JSON.stringify(scripts));
+}
+
+function renderScriptList() {
+  const list = document.getElementById('scriptList');
+  if (!list) return;
+  list.innerHTML = '';
+  scripts.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 's-item' + (i === currentScriptIdx ? ' active' : '');
+    div.innerHTML = `<div class="s-item-title">${s.name}</div><div class="s-item-meta">${s.text.length}자</div><span class="s-badge ${i === currentScriptIdx ? 's-badge-ing' : 's-badge-new'}">${i === currentScriptIdx ? '연습중' : '대기'}</span>`;
+    div.onclick = () => selectScript(i);
+    list.appendChild(div);
+  });
+}
+
+function selectScript(idx) {
+  currentScriptIdx = idx;
+  const s = scripts[idx];
+  document.getElementById('scriptInput').value = s.text;
+  document.getElementById('currentScriptName').textContent = s.name;
+  renderScriptList();
+  // Reset compare
+  document.getElementById('comparePanel').style.display = 'none';
+}
+
+function addScript() {
+  const name = prompt('스크립트 이름을 입력하세요:');
+  if (!name) return;
+  scripts.push({ name, text: '' });
+  saveScripts();
+  selectScript(scripts.length - 1);
+  renderScriptList();
+  document.getElementById('scriptInput').focus();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderScriptList();
+  selectScript(0);
+});
+
+// Save script text on input
+document.getElementById('scriptInput') && document.getElementById('scriptInput').addEventListener('input', function() {
+  scripts[currentScriptIdx].text = this.value;
+  saveScripts();
+});
+
+// ========================
+//  WEB AUDIO — WAVE
+// ========================
+let audioCtx, analyser, micStream, waveAnimId;
+const svcBars = [];
+
+function buildSvcWave() {
+  const svg = document.getElementById('svcWave');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const N = 70;
+  for (let i = 0; i < N; i++) {
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', (i / N) * 500);
+    rect.setAttribute('width', (500/N)-1.5);
+    rect.setAttribute('rx', '2');
+    rect.setAttribute('fill', i < 50 ? '#E8DDD3' : '#F0E8E0');
+    rect.setAttribute('y', '30');
+    rect.setAttribute('height', '4');
+    svg.appendChild(rect);
+    svcBars.push(rect);
+  }
+}
+buildSvcWave();
+
+function drawWave() {
+  if (!analyser) return;
+  const data = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(data);
+  const N = svcBars.length;
+  for (let i = 0; i < N; i++) {
+    const v = data[Math.floor(i * data.length / N)] / 255;
+    const h = 4 + v * 56;
+    svcBars[i].setAttribute('height', h);
+    svcBars[i].setAttribute('y', 32 - h/2);
+    svcBars[i].setAttribute('fill', v > 0.6 ? '#E05A22' : v > 0.2 ? '#C1440E' : '#E8DDD3');
+  }
+  waveAnimId = requestAnimationFrame(drawWave);
+}
+
+function stopWave() {
+  cancelAnimationFrame(waveAnimId);
+  svcBars.forEach(r => { r.setAttribute('height', '4'); r.setAttribute('y', '30'); r.setAttribute('fill', '#E8DDD3'); });
+}
+
+// ========================
+//  WEB SPEECH API — STT
+// ========================
+let recognition, sttFinal = '', sttInterim = '';
+let recStartTime, timerInterval;
+let wordCount = 0, pauseCount = 0;
+
+function initSTT() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { console.warn('Web Speech API 미지원'); return null; }
+  const r = new SR();
+  r.lang = 'ko-KR';
+  r.continuous = true;
+  r.interimResults = true;
+  r.maxAlternatives = 1;
+
+  r.onresult = (e) => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) {
+        sttFinal += t + ' ';
+        wordCount += t.trim().split(/\s+/).length;
+      } else {
+        interim = t;
+      }
+    }
+    sttInterim = interim;
+    const el = document.getElementById('sttLive');
+    el.textContent = (sttFinal + interim).trim() || '🎤 듣는 중...';
+    el.className = 'stt-live-text active';
+  };
+
+  r.onerror = (e) => {
+    if (e.error === 'not-allowed') {
+      document.getElementById('micBanner').classList.add('show');
+      setMicStatus(false);
+    }
+  };
+
+  r.onend = () => {
+    if (isRecording) r.start(); // auto-restart during recording
+  };
+  return r;
+}
+
+// ========================
+//  RECORD TOGGLE
+// ========================
+let isRecording = false;
+
+async function toggleRec() {
+  if (!isRecording) {
+    await startRec();
+  } else {
+    stopRec();
+  }
+}
+
+async function startRec() {
+  // Mic permission
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    setMicStatus(true);
+    document.getElementById('micBanner').classList.remove('show');
+  } catch(e) {
+    document.getElementById('micBanner').classList.add('show');
+    setMicStatus(false);
+    return;
+  }
+
+  // Web Audio
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  const src = audioCtx.createMediaStreamSource(micStream);
+  src.connect(analyser);
+  drawWave();
+
+  // STT
+  sttFinal = ''; sttInterim = ''; wordCount = 0; pauseCount = 0;
+  recognition = initSTT();
+  if (recognition) recognition.start();
+
+  // Timer
+  recStartTime = Date.now();
+  timerInterval = setInterval(() => {
+    const s = Math.floor((Date.now() - recStartTime) / 1000);
+    const m = Math.floor(s/60).toString().padStart(2,'0');
+    const ss = (s%60).toString().padStart(2,'0');
+    document.getElementById('svcTimer').textContent = `${m}:${ss}`;
+  }, 500);
+
+  // UI
+  isRecording = true;
+  const btn = document.getElementById('svcRecBtn');
+  btn.classList.add('rec-active');
+  document.getElementById('svcHint').textContent = '● 녹화 중 — 눌러서 정지';
+  document.getElementById('svcHint').style.color = '#C1440E';
+  document.getElementById('sttLive').textContent = '🎤 듣는 중...';
+  document.getElementById('sttLive').className = 'stt-live-text active';
+}
+
+function stopRec() {
+  isRecording = false;
+  clearInterval(timerInterval);
+
+  // Stop STT
+  if (recognition) { try { recognition.stop(); } catch(e){} }
+
+  // Stop mic
+  if (micStream) micStream.getTracks().forEach(t => t.stop());
+  if (audioCtx) audioCtx.close();
+  stopWave();
+
+  // UI
+  const btn = document.getElementById('svcRecBtn');
+  btn.classList.remove('rec-active');
+  document.getElementById('svcHint').textContent = '▶ 다시 녹화하기';
+  document.getElementById('svcHint').style.color = '#B09A8A';
+
+  // Analyze after brief delay (let last STT results come in)
+  setTimeout(() => analyzeResult(), 600);
+}
+
+// ========================
+//  ANALYSIS & SCORING
+// ========================
+function normalizeText(t) {
+  return t.replace(/[.,!?。、]/g, '').trim().toLowerCase();
+}
+
+function compareWords(orig, recog) {
+  const oWords = orig.split(/\s+/).filter(Boolean);
+  const rWords = recog.split(/\s+/).filter(Boolean);
+  const rNorm = rWords.map(normalizeText);
+  return oWords.map(w => {
+    const n = normalizeText(w);
+    const matched = rNorm.some(r => r === n || r.includes(n) || n.includes(r));
+    return { word: w, ok: matched };
+  });
+}
+
+function analyzeResult() {
+  const script = document.getElementById('scriptInput').value.trim();
+  const recognized = sttFinal.trim();
+
+  if (!script) {
+    updateFeedback([{ icon: '⚠️', text: '대본을 입력하지 않았습니다.' }]);
+    return;
+  }
+  if (!recognized) {
+    updateFeedback([{ icon: '⚠️', text: '음성이 인식되지 않았습니다. 다시 시도해보세요.' }]);
+    return;
+  }
+
+  const compared = compareWords(script, recognized);
+  const okCount = compared.filter(w => w.ok).length;
+  const total = compared.length;
+  const matchRate = total > 0 ? Math.round(okCount / total * 100) : 0;
+
+  // Speed score: ideal ~120~160 words/min for Korean
+  const durationSec = Math.max(1, (Date.now() - recStartTime) / 1000);
+  const wpm = Math.round(wordCount / durationSec * 60);
+  const speedScore = wpm < 60 ? 55 : wpm > 200 ? 60 : wpm >= 100 && wpm <= 170 ? 95 : 75;
+
+  // Continuity: ratio of recognized words vs script words
+  const continuity = Math.min(100, Math.round(recognized.split(/\s+/).filter(Boolean).length / total * 100));
+
+  const overall = Math.round(matchRate * 0.6 + speedScore * 0.2 + continuity * 0.2);
+
+  // Update UI
+  setScores(overall, matchRate, speedScore, continuity);
+
+  // Compare display
+  const panel = document.getElementById('comparePanel');
+  const display = document.getElementById('compareDisplay');
+  panel.style.display = 'block';
+  display.innerHTML = compared.map(w =>
+    `<span class="${w.ok ? 'word-ok' : 'word-miss'}">${w.word}</span> `
+  ).join('');
+
+  // Miss words
+  const missWords = compared.filter(w => !w.ok).map(w => w.word);
+  const retryEl = document.getElementById('retryCards');
+  if (missWords.length === 0) {
+    retryEl.innerHTML = '<div style="font-size:11px; color:#2E7D32">✅ 모든 단어가 잘 전달됐어요!</div>';
+  } else {
+    retryEl.innerHTML = missWords.slice(0,5).map(w =>
+      `<div class="retry-card"><span class="retry-word">${w}</span><span class="retry-hint">다시 연습</span></div>`
+    ).join('');
+  }
+
+  // Feedback
+  const feedbacks = [];
+  if (matchRate >= 80) feedbacks.push({ icon: '✅', text: `발음 일치율이 ${matchRate}%입니다. 전달이 잘 됐어요!` });
+  else if (matchRate >= 60) feedbacks.push({ icon: '⚠️', text: `발음 일치율 ${matchRate}%. 주황색 단어를 집중 연습하세요.` });
+  else feedbacks.push({ icon: '❗', text: `발음 일치율 ${matchRate}%. 대본을 천천히 다시 연습해보세요.` });
+
+  if (wpm > 180) feedbacks.push({ icon: '⚠️', text: `말 속도가 빠릅니다 (분당 약 ${wpm}자). 조금 천천히 말해보세요.` });
+  else if (wpm < 60) feedbacks.push({ icon: '💡', text: `말 속도가 느립니다. 자신감 있게 발화해보세요.` });
+  else feedbacks.push({ icon: '✅', text: `말 속도가 적절합니다 (분당 약 ${wpm}자).` });
+
+  if (missWords.length > 0) feedbacks.push({ icon: '💡', text: `'${missWords[0]}' 단어부터 반복 연습해보세요.` });
+
+  updateFeedback(feedbacks);
+
+  // Save history
+  saveHistory(overall, scripts[currentScriptIdx].name, matchRate);
+  renderHistory();
+}
+
+function setScores(overall, match, speed, cont) {
+  // Donut
+  const offset = 226 - (226 * overall / 100);
+  document.getElementById('donutCircle').setAttribute('stroke-dashoffset', offset);
+  document.getElementById('donutScore').textContent = overall;
+
+  document.getElementById('bar1').style.width = match + '%';
+  document.getElementById('num1').textContent = match;
+  document.getElementById('bar2').style.width = speed + '%';
+  document.getElementById('num2').textContent = speed;
+  document.getElementById('bar3').style.width = cont + '%';
+  document.getElementById('num3').textContent = cont;
+}
+
+function updateFeedback(items) {
+  document.getElementById('feedbackPanel').innerHTML = items.map(f =>
+    `<div class="feedback-item"><span class="fi-icon">${f.icon}</span><span>${f.text}</span></div>`
+  ).join('');
+}
+
+// ========================
+//  HISTORY
+// ========================
+function saveHistory(score, name, matchRate) {
+  const h = JSON.parse(localStorage.getItem('malgyeol_history') || '[]');
+  const now = new Date();
+  h.unshift({ score, name, matchRate, time: now.toLocaleString('ko-KR', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' }) });
+  if (h.length > 20) h.pop();
+  localStorage.setItem('malgyeol_history', JSON.stringify(h));
+}
+
+function renderHistory() {
+  const h = JSON.parse(localStorage.getItem('malgyeol_history') || '[]');
+  const el = document.getElementById('historyList');
+  if (!el) return;
+  if (h.length === 0) { el.innerHTML = '<div style="font-size:11px; color:var(--brown-light)">기록 없음</div>'; return; }
+  el.innerHTML = h.slice(0,5).map(e =>
+    `<div class="history-entry"><div class="h-dot ${e.score < 60 ? 'low' : ''}"></div><div class="h-label">${e.time} · ${e.name}</div><div class="h-score">${e.score}점</div></div>`
+  ).join('');
+}
+renderHistory();
+
+// ========================
+//  MIC STATUS
+// ========================
+function setMicStatus(on) {
+  const dot = document.getElementById('micStatusDot');
+  const txt = document.getElementById('micStatusText');
+  if (!dot || !txt) return;
+  if (on) { dot.className = 'status-dot'; txt.textContent = '마이크 연결됨'; }
+  else { dot.className = 'status-dot off'; txt.textContent = '마이크 없음'; }
+}
+
+// Check mic on load
+navigator.mediaDevices && navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(s => { s.getTracks().forEach(t => t.stop()); setMicStatus(true); })
+  .catch(() => setMicStatus(false));
+
+// ========================
+//  APPLY PAGE HELPERS
+// ========================
+function selectField(el) {
+  document.querySelectorAll('.field-option').forEach(f => f.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function checkPipeline() {
+  document.querySelectorAll('.pipeline-step').forEach((s,i) => setTimeout(() => s.classList.add('verified'), i*300));
+  document.getElementById('pipeline-result').style.display = 'flex';
+}
+</script>
+</body>
+</html>
