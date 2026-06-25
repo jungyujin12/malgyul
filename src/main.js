@@ -613,26 +613,7 @@ window.stopRehearsal = function (needSave) {
   }
 };
 
-// 리포트 화면 취소 및 저장 승인 바인딩
-document.getElementById("btn-report-discard").onclick = () => {
-  if (confirm("분석 결과지를 기록실에 기록하지 않고 영구히 파기할까요?")) {
-    // 방금 추가했던 기록지 빼기
-    history.shift();
-    saveHistory();
-    renderHomeView();
-    renderRehearsalView();
-  }
-};
-
-document.getElementById("btn-report-save").onclick = () => {
-  alert("연습 리포트 저장이 성공적으로 승인되었습니다. [연습 기록실]에서 언제든지 복기할 수 있습니다.");
-  switchTab("history");
-};
-
-// 캔버스 정지 컨트롤 인터페이스 매칭
-document.getElementById("btn-start-rehearsal").onclick = () => startRehearsal();
-document.getElementById("btn-cancel-rehearsal").onclick = () => stopRehearsal(false);
-document.getElementById("btn-finish-rehearsal").onclick = () => stopRehearsal(true);
+// (이벤트 핸들러는 DOMContentLoaded 시점에 안전하게 바인딩됩니다)
 
 
 // ==========================================
@@ -803,7 +784,7 @@ window.startArticulationMic = function () {
     lucide.createIcons();
   }
 };
-document.getElementById("btn-start-artic-mic").onclick = () => startArticulationMic();
+// (이벤트 핸들러는 DOMContentLoaded 시점에 안전하게 바인딩됩니다)
 
 // --- 서브탭 B: 모음 위치 조음 분석기 ---
 function renderVowelsGrid() {
@@ -916,7 +897,7 @@ window.startVowelSimulator = function () {
     lucide.createIcons();
   }
 };
-document.getElementById("btn-simulate-vowel-match").onclick = () => startVowelSimulator();
+// (이벤트 핸들러는 DOMContentLoaded 시점에 안전하게 바인딩됩니다)
 
 // --- 서브탭 C: 지속 발성(장음) 훈련 게임 ---
 function resetSustainedPhonation() {
@@ -1001,7 +982,7 @@ window.startSustainedPhonation = function () {
     lucide.createIcons();
   }
 };
-document.getElementById("btn-start-sustained").onclick = () => startSustainedPhonation();
+// (이벤트 핸들러는 DOMContentLoaded 시점에 안전하게 바인딩됩니다)
 
 
 // ==========================================
@@ -1107,45 +1088,7 @@ window.closeScriptModal = function () {
   document.getElementById("script-modal").classList.add("hidden");
 };
 
-// 원고 추가 및 수정 저장 바인딩 핸들러
-document.getElementById("script-form").onsubmit = function (e) {
-  e.preventDefault();
-
-  const editId = document.getElementById("edit-script-id").value;
-  const title = document.getElementById("script-title-input").value.trim();
-  const text = document.getElementById("script-text-input").value.trim();
-
-  if (!title || !text) {
-    alert("제목과 원고 내용을 입력해 주세요.");
-    return;
-  }
-
-  if (editId) {
-    // 수정 처리
-    const targetIdx = scripts.findIndex(s => s.id === editId);
-    if (targetIdx !== -1) {
-      scripts[targetIdx].name = title;
-      scripts[targetIdx].text = text;
-    }
-  } else {
-    // 신규 추가 처리
-    const newScript = {
-      id: `script-${Date.now()}`,
-      name: title,
-      text: text,
-      createdAt: new Date().toISOString()
-    };
-    scripts = [newScript, ...scripts];
-    selectedScriptId = newScript.id; // 즉각 활성화
-  }
-
-  saveScripts();
-  closeScriptModal();
-  renderHomeView();
-  renderRehearsalView();
-  
-  alert("성공적으로 원고 데이터가 저장되었습니다.");
-};
+// (이벤트 핸들러는 DOMContentLoaded 시점에 안전하게 바인딩됩니다)
 
 // 원고 수정 트리거 개시
 window.editScript = function (scriptId) {
@@ -1224,5 +1167,111 @@ document.addEventListener("DOMContentLoaded", () => {
   const quickRehearsalBtn = document.getElementById("btn-quick-rehearsal");
   if (quickRehearsalBtn) {
     quickRehearsalBtn.addEventListener("click", () => switchTab("rehearsal"));
+  }
+
+  // ----------------------------------------------------
+  // 후속 배리어프리 / 게임 클릭 및 서브밋 안전 바인딩
+  // ----------------------------------------------------
+  const reportDiscardBtn = document.getElementById("btn-report-discard");
+  if (reportDiscardBtn) {
+    reportDiscardBtn.onclick = () => {
+      if (confirm("분석 결과지를 기록실에 기록하지 않고 영구히 파기할까요?")) {
+        history.shift();
+        saveHistory();
+        renderHomeView();
+        renderRehearsalView();
+      }
+    };
+  }
+
+  const reportSaveBtn = document.getElementById("btn-report-save");
+  if (reportSaveBtn) {
+    reportSaveBtn.onclick = () => {
+      alert("연습 리포트 저장이 성공적으로 승인되었습니다. [연습 기록실]에서 언제든지 복기할 수 있습니다.");
+      switchTab("history");
+    };
+  }
+
+  const startRehearsalBtn = document.getElementById("btn-start-rehearsal");
+  if (startRehearsalBtn) {
+    startRehearsalBtn.onclick = () => startRehearsal();
+  }
+
+  const cancelRehearsalBtn = document.getElementById("btn-cancel-rehearsal");
+  if (cancelRehearsalBtn) {
+    cancelRehearsalBtn.onclick = () => stopRehearsal(false);
+  }
+
+  const finishRehearsalBtn = document.getElementById("btn-finish-rehearsal");
+  if (finishRehearsalBtn) {
+    finishRehearsalBtn.onclick = () => stopRehearsal(true);
+  }
+
+  const startArticMicBtn = document.getElementById("btn-start-artic-mic");
+  if (startArticMicBtn) {
+    startArticMicBtn.onclick = () => startArticulationMic();
+  }
+
+  const simulateVowelMatchBtn = document.getElementById("btn-simulate-vowel-match");
+  if (simulateVowelMatchBtn) {
+    simulateVowelMatchBtn.onclick = () => startVowelSimulator();
+  }
+
+  const startSustainedBtn = document.getElementById("btn-start-sustained");
+  if (startSustainedBtn) {
+    startSustainedBtn.onclick = () => startSustainedPhonation();
+  }
+
+  const clearHistoryBtn = document.getElementById("btn-clear-history");
+  if (clearHistoryBtn) {
+    clearHistoryBtn.onclick = () => {
+      if (confirm("정말로 모든 연습 리포트 기록을 지우시겠습니까?")) {
+        history = [];
+        saveHistory();
+        renderHistoryView();
+        renderHomeView();
+        alert("모든 연습 이력이 성공적으로 지워졌습니다.");
+      }
+    };
+  }
+
+  const scriptForm = document.getElementById("script-form");
+  if (scriptForm) {
+    scriptForm.onsubmit = function (e) {
+      e.preventDefault();
+
+      const editId = document.getElementById("edit-script-id").value;
+      const title = document.getElementById("script-title-input").value.trim();
+      const text = document.getElementById("script-text-input").value.trim();
+
+      if (!title || !text) {
+        alert("제목과 원고 내용을 입력해 주세요.");
+        return;
+      }
+
+      if (editId) {
+        const targetIdx = scripts.findIndex(s => s.id === editId);
+        if (targetIdx !== -1) {
+          scripts[targetIdx].name = title;
+          scripts[targetIdx].text = text;
+        }
+      } else {
+        const newScript = {
+          id: `script-${Date.now()}`,
+          name: title,
+          text: text,
+          createdAt: new Date().toISOString()
+        };
+        scripts = [newScript, ...scripts];
+        selectedScriptId = newScript.id;
+      }
+
+      saveScripts();
+      closeScriptModal();
+      renderHomeView();
+      renderRehearsalView();
+      
+      alert("성공적으로 원고 데이터가 저장되었습니다.");
+    };
   }
 });
