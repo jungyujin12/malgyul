@@ -149,20 +149,20 @@
       </div>
 
       <!-- Mobile Navigation Scrollbar -->
-      <div class="md:hidden border-t border-orange-50 bg-white/95 flex overflow-x-auto py-2 px-4 gap-1.5 scrollbar-none" id="nav-mobile-tabs">
-        <button id="m-tab-btn-home" class="m-nav-tab-btn rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all bg-orange-700 text-white">
+      <div class="md:hidden border-t border-orange-100 bg-[#FAF7F2] flex overflow-x-auto py-2.5 px-4 gap-2.5 scrollbar-none shadow-sm" id="nav-mobile-tabs">
+        <button id="m-tab-btn-home" class="m-nav-tab-btn rounded-full px-4 py-2 text-xs font-bold whitespace-nowrap transition-all bg-orange-700 text-white shadow-sm">
           홈
         </button>
-        <button id="m-tab-btn-rehearsal" class="m-nav-tab-btn rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all text-slate-500">
+        <button id="m-tab-btn-rehearsal" class="m-nav-tab-btn rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all text-slate-600 bg-white border border-orange-100/60 shadow-sm">
           발표 리허설
         </button>
-        <button id="m-tab-btn-deaf" class="m-nav-tab-btn rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all text-slate-500">
+        <button id="m-tab-btn-deaf" class="m-nav-tab-btn rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all text-slate-600 bg-white border border-orange-100/60 shadow-sm">
           발성 및 조음
         </button>
-        <button id="m-tab-btn-history" class="m-nav-tab-btn rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all text-slate-500">
+        <button id="m-tab-btn-history" class="m-nav-tab-btn rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all text-slate-600 bg-white border border-orange-100/60 shadow-sm">
           기록실
         </button>
-        <button id="m-tab-btn-info" class="m-nav-tab-btn rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all text-slate-500">
+        <button id="m-tab-btn-info" class="m-nav-tab-btn rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all text-slate-600 bg-white border border-orange-100/60 shadow-sm">
           교육관
         </button>
       </div>
@@ -329,8 +329,8 @@
         <div class="flex flex-col lg:flex-row gap-8">
           
           <!-- Left: Script Directory & Controls -->
-          <div class="w-full lg:w-1/3 bg-[#FDFBF7] rounded-3xl p-6 border border-orange-200/60 shadow-sm flex flex-col justify-between space-y-6">
-            <div class="space-y-4">
+          <div class="w-full lg:w-1/3 bg-[#FDFBF7] rounded-3xl p-4 sm:p-6 border border-orange-200/60 shadow-sm flex flex-col justify-between space-y-4 sm:space-y-6">
+            <div class="space-y-3 sm:space-y-4">
               <div class="flex items-center justify-between">
                 <div>
                   <h3 class="text-base font-bold text-orange-950 flex items-center gap-1.5">
@@ -345,7 +345,7 @@
               </div>
 
               <!-- Script list track -->
-              <div id="rehearsal-scripts-list" class="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+              <div id="rehearsal-scripts-list" class="space-y-3 max-h-[160px] lg:max-h-[360px] overflow-y-auto pr-1">
                 <!-- Dynamically populated -->
               </div>
             </div>
@@ -387,7 +387,7 @@
           </div>
 
           <!-- Right: Active Presentation Screen -->
-          <div id="rehearsal-display-panel" class="flex-1 bg-[#FDFBF7] rounded-3xl p-6 md:p-8 border border-orange-200/60 shadow-sm flex flex-col justify-between min-h-[550px]">
+          <div id="rehearsal-display-panel" class="flex-1 bg-[#FDFBF7] rounded-3xl p-4 sm:p-6 md:p-8 border border-orange-200/60 shadow-sm flex flex-col justify-between min-h-[420px] lg:min-h-[550px]">
             
             <!-- Default Screen (Before starting) -->
             <div id="rehearsal-screen-ready" class="flex-1 flex flex-col items-center justify-center text-center p-8 space-y-6">
@@ -420,16 +420,16 @@
             <!-- Active Screen (During simulation) -->
             <div id="rehearsal-screen-active" class="hidden flex-1 flex flex-col justify-between space-y-6">
               <!-- Rehearsal Header Status -->
-              <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-                <div class="space-y-1">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-4 gap-3">
+                <div class="space-y-1 min-w-0">
                   <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 text-[10px] font-bold uppercase animate-pulse">
                     <span class="w-1.5 h-1.5 bg-red-600 rounded-full"></span>
                     <span>리허설 분석 중</span>
                   </span>
-                  <h3 id="active-script-title" class="text-base font-bold text-slate-800">발표 원고 타이틀</h3>
+                  <h3 id="active-script-title" class="text-base font-bold text-slate-800 truncate max-w-[150px] xs:max-w-[220px] sm:max-w-md">발표 원고 타이틀</h3>
                 </div>
                 <!-- Countdown timer -->
-                <div class="flex items-center gap-2 font-mono text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl">
+                <div class="flex items-center gap-2 font-mono text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl shrink-0">
                   <i data-lucide="clock" class="w-4 h-4 text-slate-500"></i>
                   <span id="rehearsal-timer">00:00</span>
                 </div>
@@ -456,6 +456,46 @@
                       </span>
                       <div id="realtime-stt-text" class="text-xs text-orange-950 font-bold bg-orange-50/60 p-3 rounded-xl border border-orange-100/40 min-h-[50px] mt-1.5 leading-relaxed">
                         아직 목소리가 감지되지 않았습니다. 마이크를 대고 원고를 또박또박 읽어주세요.
+                      </div>
+                      
+                      <!-- Speech simulation tools for iframe sandbox environments with TTS voice injection -->
+                      <div class="mt-3 bg-orange-50/50 p-2.5 rounded-xl border border-orange-100/60 space-y-2">
+                        <div class="flex items-center justify-between">
+                          <span class="text-[10px] text-orange-900/80 font-bold flex items-center gap-1">
+                            <i data-lucide="mic" class="w-3.5 h-3.5 text-orange-700 animate-pulse"></i>
+                            <span>실시간 TTS 음성 주입기 (STT 시뮬레이터)</span>
+                          </span>
+                          <div class="flex items-center gap-1.5">
+                            <button id="btn-load-script-to-tts" type="button" class="text-[9px] text-orange-950 bg-orange-100/80 hover:bg-orange-200 px-1.5 py-0.5 rounded font-bold transition-all">
+                              📝 대본 세팅
+                            </button>
+                            <button id="btn-clear-tts-input" type="button" class="text-[9px] text-slate-500 hover:text-slate-700 font-bold">
+                              초기화
+                            </button>
+                          </div>
+                        </div>
+                        
+                        <textarea id="tts-input-text" rows="1" class="w-full text-[11px] p-1.5 border border-orange-200/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-orange-400 bg-white/90 resize-none font-medium text-slate-700" placeholder="목소리로 낭독하며 실시간 자막으로 변환할 대사"></textarea>
+                        
+                        <div class="flex items-center justify-between gap-1.5">
+                          <div class="flex items-center gap-2">
+                            <button id="btn-simulate-speech-correct" type="button" class="text-[10px] text-emerald-800 hover:text-emerald-950 font-extrabold underline cursor-pointer transition-all">
+                              [모의] 정상 대사
+                            </button>
+                            <button id="btn-simulate-speech-mismatch" type="button" class="text-[10px] text-red-800 hover:text-red-950 font-extrabold underline cursor-pointer transition-all">
+                              [모의] 다른 대사
+                            </button>
+                          </div>
+                          
+                          <div class="flex items-center gap-1">
+                            <button id="btn-stop-tts" type="button" class="text-[9px] font-bold text-red-700 bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded hidden transition-all">
+                              ⏹️ 중단
+                            </button>
+                            <button id="btn-speak-tts" type="button" class="text-[10px] font-bold text-white bg-orange-600 hover:bg-orange-700 px-2.5 py-0.5 rounded-md shadow-sm transition-all flex items-center gap-0.5">
+                              <span>🗣️ TTS 말하기</span>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -497,13 +537,13 @@
               </div>
 
               <!-- Rehearsal Footer Controls -->
-              <div class="border-t border-slate-100 pt-4 flex items-center justify-between">
+              <div class="border-t border-slate-100 pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                 <button id="btn-cancel-rehearsal" class="px-5 py-2.5 rounded-full border border-slate-200 hover:bg-slate-50 text-slate-500 font-bold text-xs transition-all">
                   중단하기
                 </button>
-                <div class="flex items-center gap-2">
-                  <span class="text-xs text-slate-400">연습 완료 시 피드백이 자동 계산됩니다.</span>
-                  <button id="btn-finish-rehearsal" class="bg-orange-950 hover:bg-orange-900 text-white font-bold px-6 py-2.5 rounded-full text-xs transition-all flex items-center gap-1">
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <span class="text-[10px] sm:text-xs text-slate-400 text-center sm:text-left hidden sm:inline">연습 완료 시 피드백이 자동 계산됩니다.</span>
+                  <button id="btn-finish-rehearsal" class="bg-orange-950 hover:bg-orange-900 text-white font-bold px-6 py-3 sm:py-2.5 rounded-full text-xs transition-all flex items-center justify-center gap-1">
                     <i data-lucide="check" class="w-4 h-4"></i>
                     <span>연습 종료 및 리포트 확인</span>
                   </button>
@@ -601,7 +641,10 @@
       <section id="view-deaf" class="hidden space-y-8 animate-fade-in">
         <!-- Sub navigation for exercises -->
         <div class="border-b border-orange-100 flex overflow-x-auto gap-4 scrollbar-none">
-          <button id="deaf-subtab-btn-articulation" onclick="switchDeafSubtab('articulation')" class="deaf-subtab-btn border-b-2 border-orange-700 px-4 py-3 text-sm font-bold text-orange-700 whitespace-nowrap transition-all">
+          <button id="deaf-subtab-btn-unified" onclick="switchDeafSubtab('unified')" class="deaf-subtab-btn border-b-2 border-orange-700 px-4 py-3 text-sm font-bold text-orange-700 whitespace-nowrap transition-all">
+            ✨ 종합 기초 목소리 진단기 (Unified Diagnostics)
+          </button>
+          <button id="deaf-subtab-btn-articulation" onclick="switchDeafSubtab('articulation')" class="deaf-subtab-btn border-b-2 border-transparent px-4 py-3 text-sm font-bold text-slate-400 hover:text-slate-800 whitespace-nowrap transition-all">
             자음 조음 연습 (Consonants)
           </button>
           <button id="deaf-subtab-btn-vowels" onclick="switchDeafSubtab('vowels')" class="deaf-subtab-btn border-b-2 border-transparent px-4 py-3 text-sm font-bold text-slate-400 hover:text-slate-800 whitespace-nowrap transition-all">
@@ -612,8 +655,146 @@
           </button>
         </div>
 
+        <!-- NEW SUB TAB 0: Unified Diagnostics (원클릭 종합 기초 자가진단 대시보드) -->
+        <div id="deaf-content-unified" class="space-y-6">
+          <div class="bg-gradient-to-br from-orange-50 to-amber-50/50 rounded-3xl p-6 md:p-8 border border-orange-100 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h3 class="text-lg font-bold text-orange-950 flex items-center gap-1.5">
+                  <i data-lucide="activity" class="text-orange-700 w-5.5 h-5.5 animate-pulse"></i>
+                  <span>한 화면에서 다 하는 기초 종합 테스트베드</span>
+                </h3>
+                <p class="text-xs text-orange-900/75 mt-1">단 하나의 테스트 시동으로 소리의 크기(dB), 성량 평탄도(Jitter), 자음 기류 강도, 모음 포먼트 혀 좌표를 실시간으로 동시에 진단합니다.</p>
+              </div>
+              
+              <div class="flex flex-wrap gap-2 shrink-0">
+                <button id="btn-unified-simulate" class="px-4 py-2 bg-orange-950 hover:bg-orange-900 text-slate-150 text-xs font-bold rounded-xl border border-orange-900 transition-all flex items-center gap-1.5">
+                  <i data-lucide="sparkles" class="w-4 h-4 text-amber-300"></i>
+                  <span>[모의] 목소리 주입하기</span>
+                </button>
+                <button id="btn-unified-start" class="px-5 py-2.5 bg-orange-700 hover:bg-orange-800 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-md">
+                  <i data-lucide="play" class="w-4 h-4"></i>
+                  <span>종합 목소리 진단 시작</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Unified Diagnostic Display Panels -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-2">
+              
+              <!-- 1. Realtime Volume Panel -->
+              <div class="bg-white p-5 rounded-2xl border border-orange-200/50 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <span class="text-[9px] font-extrabold text-orange-700 uppercase tracking-wider font-mono">01. Vocal Volume</span>
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                    <i data-lucide="volume-2" class="w-4 h-4 text-orange-600"></i>
+                    <span>실시간 성량 크기</span>
+                  </h4>
+                  <p class="text-[11px] text-slate-500 leading-relaxed">목소리의 기초 크기입니다. 일반 대화 수준인 60~70 dB를 유지하세요.</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs font-bold font-mono">
+                    <span class="text-slate-400">성량 수치</span>
+                    <span id="unified-vol-val" class="text-orange-700">0.0 dB</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200/50 p-0.5">
+                    <div id="unified-vol-bar" class="bg-gradient-to-r from-orange-400 to-orange-600 h-full rounded-full transition-all duration-100" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Pitch Stability Jitter Panel -->
+              <div class="bg-white p-5 rounded-2xl border border-orange-200/50 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <span class="text-[9px] font-extrabold text-emerald-700 uppercase tracking-wider font-mono">02. Sound Flatness</span>
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                    <i data-lucide="waveform" class="w-4 h-4 text-emerald-600"></i>
+                    <span>발성 고저 편차 (Jitter)</span>
+                  </h4>
+                  <p class="text-[11px] text-slate-500 leading-relaxed">소리의 떨림 정도입니다. 바늘이 녹색 안정권 중앙에 고정될수록 안정적입니다.</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs font-bold font-mono">
+                    <span class="text-slate-400">주파수 편차</span>
+                    <span id="unified-jitter-val" class="text-emerald-700">0.0 Hz (안정)</span>
+                  </div>
+                  <div class="relative w-full bg-slate-950 h-5 rounded-lg border border-slate-200 overflow-hidden">
+                    <div class="absolute inset-y-0 left-1/3 right-1/3 bg-emerald-500/20"></div>
+                    <div id="unified-jitter-bar" class="absolute w-1 h-full bg-emerald-400 transition-all duration-150" style="left: 50%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. Consonant Airflow High-Freq Panel -->
+              <div class="bg-white p-5 rounded-2xl border border-orange-200/50 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <span class="text-[9px] font-extrabold text-blue-700 uppercase tracking-wider font-mono">03. Consonant Airflow</span>
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                    <i data-lucide="wind" class="w-4 h-4 text-blue-600"></i>
+                    <span>자음 마찰 및 파열 강도</span>
+                  </h4>
+                  <p class="text-[11px] text-slate-500 leading-relaxed">자음 낭독 시 나타나는 입바람 강도와 고주파 조음 에너지 반응입니다.</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex justify-between text-xs font-bold font-mono">
+                    <span class="text-slate-400">공기 흐름량</span>
+                    <span id="unified-artic-val" class="text-blue-700">0%</span>
+                  </div>
+                  <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200/50 p-0.5">
+                    <div id="unified-artic-bar" class="bg-gradient-to-r from-blue-400 to-blue-600 h-full rounded-full transition-all duration-100" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Vowel Formant 2D Coordinate Panel -->
+              <div class="bg-white p-5 rounded-2xl border border-orange-200/50 shadow-sm space-y-4 flex flex-col justify-between">
+                <div class="space-y-1.5">
+                  <span class="text-[9px] font-extrabold text-amber-700 uppercase tracking-wider font-mono">04. Vowel Formant Coordinates</span>
+                  <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                    <i data-lucide="disc" class="w-4 h-4 text-amber-600"></i>
+                    <span>모음 포먼트 (혀의 위치)</span>
+                  </h4>
+                  <p class="text-[11px] text-slate-500 leading-relaxed">발성 시 혀의 고저 및 전후축의 좌표를 2차원 공간 상에 가시화합니다.</p>
+                </div>
+                <div class="relative w-full h-24 bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+                  <div class="absolute left-1.5 top-1 text-[7px] text-slate-500 font-mono">고모음 (High)</div>
+                  <div class="absolute left-1.5 bottom-1 text-[7px] text-slate-500 font-mono">저모음 (Low)</div>
+                  <div class="absolute right-1.5 top-1 text-[7px] text-slate-500 font-mono">후설 (Back)</div>
+                  <div class="absolute left-1/2 top-1 transform -translate-x-1/2 text-[7px] text-slate-500 font-mono">전설 (Front)</div>
+                  
+                  <!-- Stable target match center -->
+                  <div class="absolute w-6 h-6 rounded-full bg-orange-500/20 border border-orange-400/40 flex items-center justify-center text-[7px] font-bold text-orange-200" style="left: 45%; top: 40%">
+                    Target
+                  </div>
+                  
+                  <!-- Realtime Moving Dot -->
+                  <div id="unified-vowel-dot" class="absolute w-3.5 h-3.5 rounded-full bg-emerald-400 border border-white shadow-md transition-all duration-150" style="left: 20%; top: 75%"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Dashboard Advice Bar -->
+            <div class="bg-orange-950/90 text-white p-4 rounded-2xl border border-orange-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+              <div class="flex items-start gap-2">
+                <div class="p-1.5 bg-orange-900/80 rounded-xl shrink-0 text-amber-300">
+                  <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </div>
+                <div class="space-y-0.5">
+                  <span class="font-extrabold text-amber-200">종합 기초 목소리 진단 어드바이스</span>
+                  <p id="unified-advice-text" class="text-slate-300 text-[11px]">마이크 검진을 시작하거나 모의 음성 주입기를 클릭하여 종합 실시간 보컬 진단을 실행해 주세요.</p>
+                </div>
+              </div>
+              <div id="unified-diagnostic-badge" class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 rounded-full font-bold text-[10px] text-orange-200 shrink-0">
+                <span class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                <span>진단 대기 중</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- SUB TAB A: Consonant Articulation (자음 조음) -->
-        <div id="deaf-content-articulation" class="space-y-6">
+        <div id="deaf-content-articulation" class="hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Grid: Alphabet Selector -->
             <div class="lg:col-span-2 bg-[#FDFBF7] rounded-3xl p-6 border border-orange-200/60 shadow-sm space-y-6">
