@@ -456,8 +456,8 @@
                           <span>실시간 음성 인식 자막 (STT)</span>
                         </span>
                         
-                        <!-- STT Mode Selection Switcher -->
-                        <div class="flex items-center bg-slate-100/85 p-0.5 rounded-lg border border-slate-200/40 text-[9px] font-bold shrink-0">
+                        <!-- STT Mode Selection Switcher (Hidden) -->
+                        <div class="hidden items-center bg-slate-100/85 p-0.5 rounded-lg border border-slate-200/40 text-[9px] font-bold shrink-0">
                           <button id="btn-stt-mode-api" type="button" class="px-2 py-0.5 rounded bg-white text-orange-800 shadow-sm transition-all cursor-pointer">
                             🌐 브라우저 STT
                           </button>
@@ -475,46 +475,6 @@
 
                       <div id="realtime-stt-text" class="text-xs text-orange-950 font-bold bg-orange-50/60 p-3 rounded-xl border border-orange-100/40 min-h-[50px] leading-relaxed">
                         아직 목소리가 감지되지 않았습니다. 마이크를 대고 원고를 또박또박 읽어주세요.
-                      </div>
-                      
-                      <!-- Speech simulation tools for iframe sandbox environments with TTS voice injection -->
-                      <div class="mt-3 bg-orange-50/50 p-2.5 rounded-xl border border-orange-100/60 space-y-2">
-                        <div class="flex items-center justify-between">
-                          <span class="text-[10px] text-orange-900/80 font-bold flex items-center gap-1">
-                            <i data-lucide="mic" class="w-3.5 h-3.5 text-orange-700 animate-pulse"></i>
-                            <span>실시간 TTS 음성 주입기 (STT 시뮬레이터)</span>
-                          </span>
-                          <div class="flex items-center gap-1.5">
-                            <button id="btn-load-script-to-tts" type="button" class="text-[9px] text-orange-950 bg-orange-100/80 hover:bg-orange-200 px-1.5 py-0.5 rounded font-bold transition-all">
-                              📝 대본 세팅
-                            </button>
-                            <button id="btn-clear-tts-input" type="button" class="text-[9px] text-slate-500 hover:text-slate-700 font-bold">
-                              초기화
-                            </button>
-                          </div>
-                        </div>
-                        
-                        <textarea id="tts-input-text" rows="1" class="w-full text-[11px] p-1.5 border border-orange-200/50 rounded-lg focus:outline-none focus:ring-1 focus:ring-orange-400 bg-white/90 resize-none font-medium text-slate-700" placeholder="목소리로 낭독하며 실시간 자막으로 변환할 대사"></textarea>
-                        
-                        <div class="flex items-center justify-between gap-1.5">
-                          <div class="flex items-center gap-2">
-                            <button id="btn-simulate-speech-correct" type="button" class="text-[10px] text-emerald-800 hover:text-emerald-950 font-extrabold underline cursor-pointer transition-all">
-                              [모의] 정상 대사
-                            </button>
-                            <button id="btn-simulate-speech-mismatch" type="button" class="text-[10px] text-red-800 hover:text-red-950 font-extrabold underline cursor-pointer transition-all">
-                              [모의] 다른 대사
-                            </button>
-                          </div>
-                          
-                          <div class="flex items-center gap-1">
-                            <button id="btn-stop-tts" type="button" class="text-[9px] font-bold text-red-700 bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded hidden transition-all">
-                              ⏹️ 중단
-                            </button>
-                            <button id="btn-speak-tts" type="button" class="text-[10px] font-bold text-white bg-orange-600 hover:bg-orange-700 px-2.5 py-0.5 rounded-md shadow-sm transition-all flex items-center gap-0.5">
-                              <span>🗣️ TTS 말하기</span>
-                            </button>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>
