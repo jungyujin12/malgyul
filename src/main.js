@@ -707,14 +707,11 @@ window.startRehearsal = async function () {
 
   // 모드 설정에 따른 제어
   if (sttMode === "vad") {
-    isVadAutoSttActive = true;
-    if (statusText) statusText.innerText = "🎙️ 소리 감지 자동 추적 구동 중 (목소리를 내면 대본 자막이 자동으로 흐릅니다)";
-    if (statusBadge) {
-      statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100/50";
-    }
-  } else {
     isVadAutoSttActive = false;
     if (SpeechRecognition) {
+      let consecutiveRestarts = 0;
+      let lastRestartTime = Date.now();
+
       try {
         recognition = new SpeechRecognition();
         recognition.continuous = true;
@@ -731,22 +728,41 @@ window.startRehearsal = async function () {
 
         recognition.onerror = (e) => {
           console.warn("Speech recognition error:", e);
-          // 보안 제약(not-allowed) 등으로 구동 실패 시 자동으로 VAD 모드로 대체 전향
           if (e.error === "not-allowed" || e.error === "service-not-allowed" || e.error === "security") {
-            console.log("자동으로 소리 감지 자막 연동 모드(VAD Fallback)로 전환합니다.");
-            isVadAutoSttActive = true;
-            sttMode = "vad";
-            updateSttModeToggleButtons();
-            if (statusText) statusText.innerText = "🎙️ 소리 감지 자동 추적 전환됨 (마이크 권한/보안 제약으로 우회 가동 중)";
+            if (statusText) statusText.innerText = "🔇 마이크 접근 권한이 없거나 제한되었습니다 (브라우저 설정을 확인해 주세요)";
             if (statusBadge) {
-              statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-200/50 animate-pulse";
+              statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-red-800 bg-red-100 px-2 py-0.5 rounded-md border border-red-200/50";
+            }
+          } else {
+            if (statusText) statusText.innerText = `⚠️ 음성 인식 오류 발생 (${e.error})`;
+            if (statusBadge) {
+              statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-200/50";
             }
           }
         };
 
         recognition.onend = () => {
           if (isRehearsing && recognition && sttMode === "api") {
-            try { recognition.start(); } catch(err) {}
+            const now = Date.now();
+            if (now - lastRestartTime < 1000) {
+              consecutiveRestarts++;
+            } else {
+              consecutiveRestarts = 0;
+            }
+            lastRestartTime = now;
+
+            if (consecutiveRestarts > 5) {
+              console.warn("Too many consecutive SpeechRecognition restarts. Stopping automatic restart.");
+              if (statusText) statusText.innerText = "🔇 음성 인식 자동 재시작이 중지되었습니다. 마이크 연결을 다시 확인해 주세요.";
+              return;
+            }
+
+            // 약간의 딜레이를 주어 무한루프 및 브라우저 오버헤드 완화
+            setTimeout(() => {
+              if (isRehearsing && recognition && sttMode === "api") {
+                try { recognition.start(); } catch(err) {}
+              }
+            }, 500);
           }
         };
 
@@ -778,67 +794,19 @@ window.startRehearsal = async function () {
         recognition.start();
       } catch (err) {
         console.warn("SpeechRecognition start error:", err);
-        isVadAutoSttActive = true;
-        sttMode = "vad";
-        updateSttModeToggleButtons();
-        if (statusText) statusText.innerText = "🎙️ 소리 감지 자동 추적 (에러 우회 기동 중)";
+        if (statusText) statusText.innerText = "🔇 음성 인식 준비 중 에러가 발생했습니다.";
         if (statusBadge) {
-          statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100/50";
-        }
-        if (sttWatchdog) {
-          clearTimeout(sttWatchdog);
+          statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-red-800 bg-red-50 px-2 py-0.5 rounded-md border border-red-100/50";
         }
       }
     } else {
       // SpeechRecognition 미지원 브라우저
-      isVadAutoSttActive = true;
-      sttMode = "vad";
-      updateSttModeToggleButtons();
-      if (statusText) statusText.innerText = "🎙️ 소리 감지 자동 추적 (브라우저 STT 미지원으로 대체 작동)";
+      if (statusText) statusText.innerText = "🔇 현재 브라우저가 음성 인식(Web Speech API)을 지원하지 않습니다. Chrome/Safari 사용을 권장합니다.";
       if (statusBadge) {
-        statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100/50";
+        statusBadge.className = "inline-flex items-center gap-1 text-[10px] font-bold text-red-800 bg-red-50 px-2 py-0.5 rounded-md border border-red-100/50";
       }
     }
   }
-
-
-
-  // 실시간 AI 피드백 텍스트 코칭 교대 출력 시뮬레이터 (SpeechRecognition 미지원 또는 응답 대기시 대비)
-  const coachingTips = [
-    { title: "성량이 아주 좋습니다", desc: "현재와 같은 명확한 크기와 톤을 유지하여 이야기를 이어가세요.", icon: "smile", color: "text-emerald-600", bg: "bg-emerald-50" },
-    { title: "조금만 더 천천히 말씀하세요", desc: "말의 속도가 다소 빨라졌습니다. 호흡을 다스리며 또박또박 낭독해 보세요.", icon: "alert-circle", color: "text-amber-600", bg: "bg-amber-50" },
-    { title: "자연스러운 정지(Pause) 감지됨", desc: "단락 사이에서 훌륭한 호흡 배분을 취하고 있습니다. 시선 처리도 좋아요.", icon: "check-circle", color: "text-blue-600", bg: "bg-blue-50" },
-    { title: "발음이 명확하고 전달력이 높습니다", desc: "모음의 형태가 뚜렷하여 청중이 집중하기 좋은 목소리 흐름입니다.", icon: "volume-2", color: "text-emerald-600", bg: "bg-emerald-50" },
-    { title: "목소리가 작아졌습니다", desc: "성량이 약 5dB 하락했습니다. 어깨 힘을 빼고 복부에 호흡을 실어 당당하게 말하세요.", icon: "alert-triangle", color: "text-orange-600", bg: "bg-orange-50" }
-  ];
-
-  let currentTipIdx = 0;
-  mockSpeechInterval = setInterval(() => {
-    if (!SpeechRecognition || !spokenText) {
-      currentTipIdx = (currentTipIdx + 1) % coachingTips.length;
-      const tip = coachingTips[currentTipIdx];
-      
-      document.getElementById("coaching-status-title").innerText = tip.title;
-      document.getElementById("coaching-status-desc").innerText = tip.desc;
-      
-      const iconContainer = document.getElementById("coaching-icon");
-      iconContainer.className = `p-2 ${tip.bg} ${tip.color} rounded-xl shrink-0 transition-all`;
-      iconContainer.innerHTML = `<i data-lucide="${tip.icon}" class="w-5 h-5"></i>`;
-
-      const vibrationOn = document.getElementById("toggle-vibration-feedback").checked;
-      if (vibrationOn && (tip.icon === "alert-circle" || tip.icon === "alert-triangle")) {
-        const panel = document.getElementById("rehearsal-display-panel");
-        panel.classList.add("animate-bounce");
-        setTimeout(() => {
-          panel.classList.remove("animate-bounce");
-        }, 500);
-      }
-
-      if (typeof lucide !== "undefined") {
-        lucide.createIcons();
-      }
-    }
-  }, 4500);
 
   // 모바일 대응: 리허설 시작 시 화면을 부드럽게 스크롤
   if (window.innerWidth < 1024) {
@@ -1023,32 +991,7 @@ function initMicAudio() {
       // 실시간 볼륨 수집
       rehearsalVolumes.push(calculatedDb);
 
-      // 하이브리드 소리 감지 오토 타이핑 자막 (VAD STT Fallback)
-      if (isVadAutoSttActive && activeScript) {
-        if (calculatedDb >= 53) {
-          const now = Date.now();
-          if (now - vadLastTypeTime > 250) { // 250ms 마다 1단어 타이핑 (자연스러운 한국어 속도)
-            if (!vadWords || vadWords.length === 0) {
-              vadWords = activeScript.text.split(/\s+/).filter(Boolean);
-            }
-            if (vadWordIndex < vadWords.length) {
-              const currentChunk = vadWords.slice(0, vadWordIndex + 1).join(" ");
-              spokenText = currentChunk;
-              
-              const sttBox = document.getElementById("realtime-stt-text");
-              if (sttBox) {
-                sttBox.innerHTML = `<span class="text-amber-700 font-extrabold flex items-center gap-1.5 mb-1 text-[10px]">
-                  <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span> 
-                  [🎙️ 소리 감지 자동 추적 중]:
-                </span> <span class="text-slate-800 leading-normal font-bold">${spokenText}</span>`;
-              }
-              updateRealtimeFeedback(activeScript.text, spokenText);
-              vadWordIndex++;
-              vadLastTypeTime = now;
-            }
-          }
-        }
-      }
+
 
       // 파형 그리기 (실제 주파수 결합)
       ctx.lineWidth = 2.5;
